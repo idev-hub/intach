@@ -15,7 +15,7 @@ const http = require("http");
 
 http.createServer(function (request, response) {
     response.end("InTach");
-}).listen(process.env.YOUR_PORT || process.env.PORT || 80, () => {
+}).listen(process.env.PORT || 80, () => {
     console.log("INFO: Server host")
     chgpgt.updates.startPolling().then(() => {
         console.log("INFO: BOT RUNNING")
