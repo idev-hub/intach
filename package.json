@@ -28,6 +28,7 @@
         "@vk-io/hear": "^1.0.2",
         "@vk-io/scenes": "^1.0.0",
         "@vk-io/session": "^2.0.0",
+        "dotenv": "^8.2.0",
         "luxon": "^1.22.0",
         "nedb-async": "^0.1.3",
         "node-fetch": "^2.6.0",

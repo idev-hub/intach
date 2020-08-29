@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 import chgpgt from "./bot"
 import {users} from './database'
 import './scenes/scenes'
