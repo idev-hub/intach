@@ -1,5 +1,8 @@
 import fetch from "node-fetch"
 
+/*
+* Получение расписания для учеников по дате и группе
+* */
 export const getTimetableOfGroup = async (date: string, group: string) => {
     try {
         const dates = await getAllDates()
@@ -26,6 +29,10 @@ export const getTimetableOfGroup = async (date: string, group: string) => {
         }
     }
 }
+
+/*
+* Получение расписания для учителей по дате и фамилии
+* */
 export const getTimetableOfTeacher = async (date: string, family: string) => {
     try {
         const response = await fetch(encodeURI(`https://api.chgpgt.ru/api/getRaspisanPrepod/${date}/${family}`), {
@@ -43,6 +50,10 @@ export const getTimetableOfTeacher = async (date: string, family: string) => {
         }
     }
 }
+
+/*
+* Получение списка преподователей
+* */
 export const getTeachers = async () => {
     try {
         const response = await fetch(encodeURI(`https://api.chgpgt.ru/api/getprepod`), {
@@ -60,6 +71,10 @@ export const getTeachers = async () => {
         }
     }
 }
+
+/*
+* Получение всех дат расписания
+* */
 export const getAllDates = async () => {
     try {
         const response = await fetch(encodeURI(`https://api.chgpgt.ru/api/getAllDates`), {
@@ -77,6 +92,10 @@ export const getAllDates = async () => {
         }
     }
 }
+
+/*
+* Получение минимальной и максимальной даты расписания
+* */
 export const getMinMaxDate = async () => {
     try {
         const response = await fetch(encodeURI(`https://api.chgpgt.ru/api/minMaxDate`), {

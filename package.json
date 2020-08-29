@@ -4,6 +4,7 @@
     "description": "Получайте актуальное расписание в личные сообщения в Вконтакте",
     "main": "dist/index.js",
     "scripts": {
+        "server": "tsc -watch && nodemon dist/index.js",
         "watch": "tsc -watch",
         "start": "nodemon dist/index.js"
     },
@@ -18,12 +19,13 @@
     },
     "homepage": "https://github.com/idev-hub/vkbot_colleges#readme",
     "dependencies": {
-        "@vk-io/hear": "^1.0.0",
+        "@vk-io/hear": "^1.0.2",
         "@vk-io/scenes": "^1.0.0",
         "@vk-io/session": "^2.0.0",
         "luxon": "^1.22.0",
+        "nedb-async": "^0.1.3",
         "node-fetch": "^2.6.0",
-        "vk-io": "^4.0.0"
+        "vk-io": "^4.0.1"
     },
     "devDependencies": {
         "@types/bluebird": "^3.5.30",
