@@ -118,14 +118,6 @@ for (const command of commands) {
  * Команда ПОМОЩЬ
  * @beta
  **/
-bot.command('new', ['start', 'начать', 'привет', 'хай', 'hi', 'hello', 'ку'], (context) => {
-    return context.scene.enter("start-scene")
-})
-
-/**
- * Команда ПОМОЩЬ
- * @beta
- **/
 bot.command('help', (context) => {
     let template = ""
     for (const command of commands) {
