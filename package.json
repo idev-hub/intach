@@ -1,14 +1,18 @@
 {
-    "name": "vkbot_colleges",
-    "version": "0.0.1",
+    "name": "intach",
+    "version": "0.0.3",
     "description": "Получайте актуальное расписание в личные сообщения в Вконтакте",
     "main": "dist/index.js",
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "compilerOptions": {},
     "scripts": {
-        "build": "tsc",
-        "start": "node dist/index.js",
-        "watch": "tsc -watch",
-        "nodemon": "nodemon dist/index.js",
-        "server": "tsc && nodemon dust/index.js"
+        "start": "ts-node src/index.ts",
+        "dev": "nodemon -x ts-node src/index.ts"
     },
     "repository": {
         "type": "git",
@@ -27,6 +31,7 @@
         "luxon": "^1.22.0",
         "nedb-async": "^0.1.3",
         "node-fetch": "^2.6.0",
+        "ts-node": "^9.0.0",
         "vk-io": "^4.0.1"
     },
     "devDependencies": {
