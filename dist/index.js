@@ -12,5 +12,13 @@ database_1.users.asyncLoadDatabase().then(() => {
 }).catch((e) => {
     console.log('FATAL: local database could not be loaded. Caused by: ' + e);
 });
-bot_1.default.updates.start().then(console.log).catch(console.error);
+const http = require("http");
+http.createServer(function (request, response) {
+    response.end("InTach");
+}).listen(process.env.YOUR_PORT || process.env.PORT || 80, () => {
+    console.log("INFO: Server host");
+    bot_1.default.updates.startPolling().then(() => {
+        console.log("INFO: BOT RUNNING");
+    }).catch(console.error);
+});
 //# sourceMappingURL=index.js.map

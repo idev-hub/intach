@@ -43,6 +43,7 @@ class Bot extends vk_io_1.VK {
             context.state.command = messagePayload && messagePayload.command
                 ? messagePayload.command.toLowerCase()
                 : null;
+            console.log("BOT: ", `new message from by id - ${context.peerId}: text - ${context.text}`);
             return next();
         });
         // Проверка авторизации пользователя

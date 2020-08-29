@@ -49,6 +49,9 @@ export class Bot extends VK {
                 ? messagePayload.command.toLowerCase()
                 : null
 
+
+            console.log("BOT: ", `new message from by id - ${context.peerId}: text - ${context.text}`)
+
             return next()
         })
 

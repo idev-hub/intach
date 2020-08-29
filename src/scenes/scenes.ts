@@ -67,6 +67,7 @@ bot.sceneManager.addScenes([
             return context.scene.step.next()
         },
         async (context) => {
+            console.log("BOT: ", `new user register from by id - ${context.peerId}: type - ${context.scene.state.type}: param - ${context.scene.state.param}`)
             await context.send({
                 message: "Замечательно! Теперь вы можете получить своё расписание.",
                 keyboard: ifLoginKeyboard
