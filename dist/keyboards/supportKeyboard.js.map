@@ -1,0 +1,1 @@
+{"version":3,"file":"supportKeyboard.js","sourceRoot":"","sources":["../../src/keyboards/supportKeyboard.ts"],"names":[],"mappings":";;AAAA,iCAA+B;AAE/B,kBAAe,gBAAQ,CAAC,OAAO,EAAE;KAC5B,UAAU,CAAC;IACR,KAAK,EAAE,UAAU;IACjB,OAAO,EAAE;QACL,OAAO,EAAE,SAAS;KACrB;IACD,KAAK,EAAE,gBAAQ,CAAC,cAAc;CACjC,CAAC;KACD,MAAM,EAAE,CAAA"}
