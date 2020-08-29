@@ -114,6 +114,13 @@ for (const command of commands) {
     if (!command["not"]) bot.command(command.name, command.handler)
 }
 
+/**
+ * Команда ПОМОЩЬ
+ * @beta
+ **/
+bot.command('new', ['start', 'начать', 'привет', 'хай', 'hi', 'hello', 'ку'], (context) => {
+    return context.scene.enter("start-scene")
+})
 
 /**
  * Команда ПОМОЩЬ
