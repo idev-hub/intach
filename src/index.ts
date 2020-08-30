@@ -12,6 +12,7 @@ users.asyncLoadDatabase().then(() => {
     console.log('FATAL: local database could not be loaded. Caused by: ' + e)
 })
 
-bot.updates.startWebhook({port: parseInt(process.env.PORT) || 5000}).then(() => {
-    console.log("INFO: BOT RUNNING")
+const port = parseInt(process.env.PORT) || 80
+bot.updates.startWebhook({port: port}).then(() => {
+    console.log("INFO: BOT RUNNING. PORT: " + port)
 }).catch(console.error)
