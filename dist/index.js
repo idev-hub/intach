@@ -21,8 +21,7 @@ app.get("*", function (req, res) {
 });
 app.listen(port, function () {
     console.log(`INFO: App is listening on port ${port}!`);
-    bot_1.default.updates.startPolling().then(() => {
+    bot_1.default.updates.startWebhook().then(() => {
         console.log("INFO: BOT RUNNING");
     }).catch(console.error);
 });
-//# sourceMappingURL=index.js.map

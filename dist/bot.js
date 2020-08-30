@@ -46,7 +46,6 @@ class Bot extends vk_io_1.VK {
             console.log("BOT: ", `new message from by id - ${context.peerId}: text - ${context.text}`);
             return next();
         });
-        // Проверка авторизации пользователя
         this.updates.on('message_new', (context, next) => __awaiter(this, void 0, void 0, function* () {
             const { peerId, session } = context;
             if (!session.user) {
@@ -66,6 +65,7 @@ class Bot extends vk_io_1.VK {
 }
 exports.Bot = Bot;
 exports.default = new Bot({
-    token: process.env.TOKEN
+    token: process.env.TOKEN,
+    webhookConfirmation: process.env.CONFRIM,
+    apiVersion: process.env.V
 });
-//# sourceMappingURL=bot.js.map

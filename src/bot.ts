@@ -73,5 +73,7 @@ export class Bot extends VK {
 }
 
 export default new Bot({
-    token: process.env.TOKEN
+    token: process.env.TOKEN,
+    webhookConfirmation: process.env.CONFRIM,
+    apiVersion: process.env.V
 })

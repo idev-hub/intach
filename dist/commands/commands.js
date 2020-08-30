@@ -112,10 +112,6 @@ for (const command of commands) {
     if (!command["not"])
         bot_1.default.command(command.name, command.handler);
 }
-/**
- * Команда ПОМОЩЬ
- * @beta
- **/
 bot_1.default.command('help', (context) => {
     let template = "";
     for (const command of commands) {
@@ -123,38 +119,12 @@ bot_1.default.command('help', (context) => {
     }
     return context.send(template);
 });
-/**
- * Команда прочих команд
- * @beta
- **/
 bot_1.default.command('other', (context) => __awaiter(void 0, void 0, void 0, function* () {
-    // await context.send({
-    //     message: "Вы можете сообщить об ошибках в боте или предложить крутые идеи для него, нажав на кнопку ниже.",
-    //     keyboard: supportKeyboard
-    // })
     return context.send({
         message: "Еще команды:",
         keyboard: otherKeyboard_1.default
     });
 }));
-/**
- * Команда получение расписания на определенную дату
- * @beta
- **/
 bot_1.default.command('date', /^\/date (.+)/i, (context) => __awaiter(void 0, void 0, void 0, function* () {
-    // const date = context.$match[1].split('').join('')
-    //
-    // try {
-    //     const timetable = await getTimetableOfGroup(date, "107")
-    //
-    //     if (timetable.status === 0) {
-    //         await context.send(JSON.stringify(timetable.response))
-    //     } else {
-    //         await context.send(timetable.response.toString())
-    //     }
-    // } catch (e) {
-    //     console.error(e)
-    // }
     return context.send("Данная функция еще не реализована.");
 }));
-//# sourceMappingURL=commands.js.map

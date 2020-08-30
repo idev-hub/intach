@@ -14,4 +14,3 @@ exports.default = vk_io_1.Keyboard.builder().textButton({
     },
     color: vk_io_1.Keyboard.PRIMARY_COLOR
 }).oneTime();
-//# sourceMappingURL=typeUserKeyboard.js.map

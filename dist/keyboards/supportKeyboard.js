@@ -10,4 +10,3 @@ exports.default = vk_io_1.Keyboard.builder()
     color: vk_io_1.Keyboard.NEGATIVE_COLOR
 })
     .inline();
-//# sourceMappingURL=supportKeyboard.js.map

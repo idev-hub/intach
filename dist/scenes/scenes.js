@@ -18,9 +18,6 @@ const database_1 = require("../database");
 const typeUserKeyboard_1 = __importDefault(require("../keyboards/typeUserKeyboard"));
 const ifLoginKeyboard_1 = __importDefault(require("../keyboards/ifLoginKeyboard"));
 bot_1.default.sceneManager.addScenes([
-    /**
-     * Сцена старта
-     **/
     new scenes_1.StepScene('start-scene', [
         (context) => {
             context.session.user = undefined;
@@ -60,7 +57,6 @@ bot_1.default.sceneManager.addScenes([
         },
         (context) => __awaiter(void 0, void 0, void 0, function* () {
             const { type, param } = yield context.scene.state;
-            // Сохранение данных в БД
             const user = yield database_1.users.asyncFindOne({ _id: context.peerId });
             if (user) {
                 yield database_1.users.asyncUpdate({ _id: context.peerId }, {
@@ -85,4 +81,3 @@ bot_1.default.sceneManager.addScenes([
         })
     ])
 ]);
-//# sourceMappingURL=scenes.js.map

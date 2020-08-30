@@ -13,9 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fetch_1 = __importDefault(require("node-fetch"));
-/*
-* Получение расписания для учеников по дате и группе
-* */
 exports.getTimetableOfGroup = (date, group) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const dates = yield exports.getAllDates();
@@ -44,9 +41,6 @@ exports.getTimetableOfGroup = (date, group) => __awaiter(void 0, void 0, void 0,
         };
     }
 });
-/*
-* Получение расписания для учителей по дате и фамилии
-* */
 exports.getTimetableOfTeacher = (date, family) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield node_fetch_1.default(encodeURI(`https://api.chgpgt.ru/api/getRaspisanPrepod/${date}/${family}`), {
@@ -64,9 +58,6 @@ exports.getTimetableOfTeacher = (date, family) => __awaiter(void 0, void 0, void
         };
     }
 });
-/*
-* Получение списка преподователей
-* */
 exports.getTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield node_fetch_1.default(encodeURI(`https://api.chgpgt.ru/api/getprepod`), {
@@ -84,9 +75,6 @@ exports.getTeachers = () => __awaiter(void 0, void 0, void 0, function* () {
         };
     }
 });
-/*
-* Получение всех дат расписания
-* */
 exports.getAllDates = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield node_fetch_1.default(encodeURI(`https://api.chgpgt.ru/api/getAllDates`), {
@@ -104,9 +92,6 @@ exports.getAllDates = () => __awaiter(void 0, void 0, void 0, function* () {
         };
     }
 });
-/*
-* Получение минимальной и максимальной даты расписания
-* */
 exports.getMinMaxDate = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield node_fetch_1.default(encodeURI(`https://api.chgpgt.ru/api/minMaxDate`), {
@@ -124,4 +109,3 @@ exports.getMinMaxDate = () => __awaiter(void 0, void 0, void 0, function* () {
         };
     }
 });
-//# sourceMappingURL=fetches.js.map

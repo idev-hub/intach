@@ -18,4 +18,3 @@ exports.default = vk_io_1.Keyboard.builder()
     color: vk_io_1.Keyboard.SECONDARY_COLOR
 })
     .inline();
-//# sourceMappingURL=otherKeyboard.js.map

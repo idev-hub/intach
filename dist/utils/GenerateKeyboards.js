@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const vk_io_1 = require("vk-io");
-/**
- * Генерирует клавиатуру из массива по ширине и высоте
- **/
 function GenerateKeyboards(items = [], rows = 4, columns = 5, coefficientColor = 3) {
     let keyboards = [], index = items.length;
     for (let r = 0; r < rows; r++) {
@@ -23,4 +20,3 @@ function GenerateKeyboards(items = [], rows = 4, columns = 5, coefficientColor =
     return keyboards;
 }
 exports.GenerateKeyboards = GenerateKeyboards;
-//# sourceMappingURL=GenerateKeyboards.js.map

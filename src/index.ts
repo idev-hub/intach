@@ -24,7 +24,7 @@ app.get("*", function (req, res) {
 
 app.listen(port, function () {
     console.log(`INFO: App is listening on port ${port}!`)
-    chgpgt.updates.startPolling().then(() => {
+    chgpgt.updates.startWebhook().then(() => {
         console.log("INFO: BOT RUNNING")
     }).catch(console.error)
 })

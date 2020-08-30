@@ -41,4 +41,3 @@ exports.getTimetable = (context, date) => __awaiter(void 0, void 0, void 0, func
         timetable = yield fetches_1.getTimetableOfTeacher(date, session.user.param);
     return `📅 Расписание для "${session.user.param}" на "${date}": ${exports.translated(session.user.type, timetable.response)}`;
 });
-//# sourceMappingURL=timetable.js.map
