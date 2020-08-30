@@ -1,4 +1,4 @@
-import bot from "../bot";
+import bot from "../services/bot";
 import {getTeachers, getTimetableOfGroup, getTimetableOfTeacher} from "../utils/fetches";
 import otherKeyboard from "../keyboards/otherKeyboard";
 import ifLoginKeyboard from "../keyboards/ifLoginKeyboard";

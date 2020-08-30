@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bot_1 = __importDefault(require("../bot"));
+const bot_1 = __importDefault(require("../services/bot"));
 const otherKeyboard_1 = __importDefault(require("../keyboards/otherKeyboard"));
 const ifLoginKeyboard_1 = __importDefault(require("../keyboards/ifLoginKeyboard"));
 const Luxon_1 = __importDefault(require("../utils/Luxon"));

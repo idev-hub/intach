@@ -1,4 +1,4 @@
-import bot from "../bot";
+import bot from "../services/bot";
 import {StepScene} from "@vk-io/scenes";
 import {users} from "../database"
 import typeUserKeyboard from "../keyboards/typeUserKeyboard";

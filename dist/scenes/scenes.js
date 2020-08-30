@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bot_1 = __importDefault(require("../bot"));
+const bot_1 = __importDefault(require("../services/bot"));
 const scenes_1 = require("@vk-io/scenes");
 const database_1 = require("../database");
 const typeUserKeyboard_1 = __importDefault(require("../keyboards/typeUserKeyboard"));

@@ -13,7 +13,7 @@ const vk_io_1 = require("vk-io");
 const hear_1 = require("@vk-io/hear");
 const session_1 = require("@vk-io/session");
 const scenes_1 = require("@vk-io/scenes");
-const database_1 = require("./database");
+const database_1 = require("../database");
 class Bot extends vk_io_1.VK {
     constructor(props) {
         super(props);

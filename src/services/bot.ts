@@ -2,7 +2,7 @@ import {MessageContext, VK} from 'vk-io'
 import {HearManager} from "@vk-io/hear";
 import {SessionManager} from "@vk-io/session";
 import {SceneManager} from "@vk-io/scenes";
-import {users} from "./database";
+import {users} from "../database";
 
 export class Bot extends VK {
     readonly hearManager: HearManager<MessageContext> = new HearManager<MessageContext>()
