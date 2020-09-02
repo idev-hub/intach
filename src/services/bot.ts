@@ -2,7 +2,7 @@ import {MessageContext, VK} from 'vk-io'
 import {HearManager} from "@vk-io/hear";
 import {SessionManager} from "@vk-io/session";
 import {SceneManager} from "@vk-io/scenes";
-import {users} from "../database";
+import User from "../database/models/Users";
 
 export class Bot extends VK {
     readonly hearManager: HearManager<MessageContext> = new HearManager<MessageContext>()
@@ -49,9 +49,6 @@ export class Bot extends VK {
                 ? messagePayload.command.toLowerCase()
                 : null
 
-
-            console.log("BOT: ", `new message from by id - ${context.peerId}: text - ${context.text}`)
-
             return next()
         })
 
@@ -60,7 +57,7 @@ export class Bot extends VK {
         this.updates.on('message_new', async (context, next) => {
             const {peerId, session} = context
             if (!session.user) {
-                const user = await users.asyncFindOne({_id: peerId})
+                const user = await User.findOne({where: {peerId: peerId}})
                 if (user) {
                     session.user = user
                     return next()

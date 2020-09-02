@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="59237dd5-5dfd-4a20-acb9-ec89e3a2cec1" name="Default Changelist" comment="update project">
-      <change afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+    <list default="true" id="59237dd5-5dfd-4a20-acb9-ec89e3a2cec1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/database/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/database/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/keyboards/typeUserKeyboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/keyboards/typeUserKeyboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/scenes/scenes.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/scenes/scenes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/services/bot.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/services/bot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/services/timetable.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/services/timetable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/models/Users.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/keyboards/typeUserKeyboard.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/keyboards/typeUserKeyboard.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scenes/scenes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/scenes/scenes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/bot.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/bot.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/timetable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/timetable.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,11 +48,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../idev" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="C:\Users\User\WebstormProjects\intach\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunManager" selected="npm.buid">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="buid" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -60,21 +74,21 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="build:watch" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="dev" />
+        <script value="build:watch" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="server" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="server" />
+        <script value="dev" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -92,11 +106,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.dev" />
+        <item itemvalue="npm.build:watch" />
         <item itemvalue="npm.buid" />
         <item itemvalue="npm.start" />
-        <item itemvalue="npm.dev" />
         <item itemvalue="npm.build" />
-        <item itemvalue="npm.server" />
       </list>
     </recent_temporary>
   </component>
@@ -111,7 +125,10 @@
       <workItem from="1598648618494" duration="31158000" />
       <workItem from="1598688275339" duration="881000" />
       <workItem from="1598689185184" duration="3994000" />
-      <workItem from="1598779850003" duration="12102000" />
+      <workItem from="1598779850003" duration="13430000" />
+      <workItem from="1598816786665" duration="3073000" />
+      <workItem from="1598998264890" duration="586000" />
+      <workItem from="1599001005561" duration="12705000" />
     </task>
     <task id="LOCAL-00001" summary="update project">
       <created>1598685068049</created>
@@ -267,7 +284,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598796148146</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="update project">
+      <created>1598796934596</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1598796934596</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,34 +306,34 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="531" y="211" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1598690991338" />
-    <state x="499" y="158" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598794685203">
+    <state x="499" y="158" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1599013524111">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="158" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1598794685203" />
-    <state x="385" y="0" key="CommitChangelistDialog2" timestamp="1598796478060">
+    <state x="499" y="158" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1599013524111" />
+    <state x="385" y="0" key="CommitChangelistDialog2" timestamp="1598796933609">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="385" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1598796478060" />
+    <state x="385" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1598796933609" />
     <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1598655334296">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1598655334296" />
-    <state width="1191" height="167" key="GridCell.Tab.0.bottom" timestamp="1598796134525">
+    <state width="1178" height="167" key="GridCell.Tab.0.bottom" timestamp="1599013526214">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1191" height="167" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598796134525" />
-    <state width="1191" height="167" key="GridCell.Tab.0.center" timestamp="1598796134525">
+    <state width="1178" height="167" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1599013526214" />
+    <state width="1178" height="167" key="GridCell.Tab.0.center" timestamp="1599013526214">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1191" height="167" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1598796134525" />
-    <state width="1191" height="167" key="GridCell.Tab.0.left" timestamp="1598796134525">
+    <state width="1178" height="167" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1599013526214" />
+    <state width="1178" height="167" key="GridCell.Tab.0.left" timestamp="1599013526213">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1191" height="167" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1598796134525" />
-    <state width="1191" height="167" key="GridCell.Tab.0.right" timestamp="1598796134525">
+    <state width="1178" height="167" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1599013526213" />
+    <state width="1178" height="167" key="GridCell.Tab.0.right" timestamp="1599013526214">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1191" height="167" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1598796134525" />
+    <state width="1178" height="167" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1599013526214" />
     <state x="569" y="131" key="RollbackChangesDialog" timestamp="1598650282596">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -318,10 +342,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1598785264170" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1598796149920">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1598796936855">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1598796149920" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1598796936855" />
     <state x="585" y="324" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1598794376877">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -330,13 +354,13 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="564" y="305" key="git4idea.ui.GitResetDialog/0.0.1536.824@0.0.1536.824" timestamp="1598690507195" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1598682434234">
+    <state x="425" y="187" key="run.anything.popup" timestamp="1598819802278">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1598682434234" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1598781363684">
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1598819802278" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1599005445096">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1598781363684" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1599005445096" />
   </component>
 </project>

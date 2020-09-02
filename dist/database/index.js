@@ -1,8 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const nedb_async_1 = __importDefault(require("nedb-async"));
-const path_1 = __importDefault(require("path"));
-exports.users = new nedb_async_1.default({ filename: path_1.default.join('./src/database', 'users.db') });
+const sequelize_1 = require("sequelize");
+const db = new sequelize_1.Sequelize(process.env.DBNAME, process.env.DBUSER, process.env.DBPASSWORD, {
+    host: process.env.DBHOST,
+    dialect: "mysql"
+});
+exports.default = db;

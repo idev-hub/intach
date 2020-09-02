@@ -1,18 +1,30 @@
-require('dotenv').config()
+import User from "./database/models/Users";
 
+require('dotenv').config()
+import db from "./database"
 import bot from "./services/bot"
-import {users} from './database'
 import './scenes/scenes'
 import './commands/commands'
 
 
-users.asyncLoadDatabase().then(() => {
-    console.log('INFO: local database loaded successfully.')
-}).catch((e) => {
-    console.log('FATAL: local database could not be loaded. Caused by: ' + e)
-})
+const port = parseInt(process.env.PORT) || 3000;
 
-const port = parseInt(process.env.PORT) || 3000
-bot.updates.startWebhook({port: port}).then(() => {
-    console.log("INFO: BOT RUNNING. PORT: " + port)
-}).catch(console.error)
+(async () => {
+    try {
+        await db.sync({force: true})
+
+        console.log("Database connected successfully.")
+
+        await bot.updates.startWebhook({port: port})
+
+        console.log("The bot has been successfully launched on the port:", port)
+    } catch (e) {
+        console.error(e)
+    }
+})();
+
+
+
+
+
+

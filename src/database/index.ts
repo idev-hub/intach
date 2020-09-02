@@ -1,4 +1,8 @@
-import AsyncNedb from 'nedb-async'
-import path from "path"
+import {Sequelize} from "sequelize";
 
-export const users = new AsyncNedb({filename: path.join('./src/database', 'users.db')})
+const db = new Sequelize(process.env.DBNAME, process.env.DBUSER, process.env.DBPASSWORD, {
+    host: process.env.DBHOST,
+    dialect: "mysql"
+});
+
+export default db;

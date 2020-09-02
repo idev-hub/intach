@@ -8,12 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const vk_io_1 = require("vk-io");
 const hear_1 = require("@vk-io/hear");
 const session_1 = require("@vk-io/session");
 const scenes_1 = require("@vk-io/scenes");
-const database_1 = require("../database");
+const Users_1 = __importDefault(require("../database/models/Users"));
 class Bot extends vk_io_1.VK {
     constructor(props) {
         super(props);
@@ -43,13 +46,12 @@ class Bot extends vk_io_1.VK {
             context.state.command = messagePayload && messagePayload.command
                 ? messagePayload.command.toLowerCase()
                 : null;
-            console.log("BOT: ", `new message from by id - ${context.peerId}: text - ${context.text}`);
             return next();
         });
         this.updates.on('message_new', (context, next) => __awaiter(this, void 0, void 0, function* () {
             const { peerId, session } = context;
             if (!session.user) {
-                const user = yield database_1.users.asyncFindOne({ _id: peerId });
+                const user = yield Users_1.default.findOne({ where: { peerId: peerId } });
                 if (user) {
                     session.user = user;
                     return next();

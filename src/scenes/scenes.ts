@@ -1,8 +1,12 @@
 import bot from "../services/bot";
 import {StepScene} from "@vk-io/scenes";
-import {users} from "../database"
 import typeUserKeyboard from "../keyboards/typeUserKeyboard";
 import ifLoginKeyboard from "../keyboards/ifLoginKeyboard";
+import User from "../database/models/Users";
+import {unique} from "../utils/ArrayService";
+import {GenerateKeyboards} from "../utils/GenerateKeyboards";
+import {Keyboard} from "vk-io";
+import {getTeachers} from "../utils/fetches";
 
 bot.sceneManager.addScenes([
 
@@ -10,8 +14,8 @@ bot.sceneManager.addScenes([
      * Сцена старта
      **/
     new StepScene('start-scene', [
-        (context) => {
-
+        async (context) => {
+            await context.setActivity()
             context.session.user = undefined
 
             if (context.scene.step.firstTime || !context.text) {
@@ -21,7 +25,7 @@ bot.sceneManager.addScenes([
                 })
             }
 
-            if (context.messagePayload && (context.messagePayload.command === "pupil" || context.messagePayload.command === "teacher")) {
+            if (context.messagePayload && (context.messagePayload.command === 0 || context.messagePayload.command === 1)) {
                 context.scene.state.type = context.messagePayload.command
                 return context.scene.step.next()
             } else {
@@ -31,16 +35,44 @@ bot.sceneManager.addScenes([
                 })
             }
         },
-        (context) => {
+        async (context) => {
+            await context.setActivity()
+
             const {type} = context.scene.state
             if (context.scene.step.firstTime || !context.text) {
-                if (type === "pupil") {
+                if (type === 0) {
+
+                    const users = await User.findAll({where: {type: 0}})
+                    const groups = unique(users.map((user) => user["param"]))
+
                     return context.send({
-                        message: 'Введите свою группу. Как указано на официальном сайте.\nПример: "107", "202", "10", "201-3", "517з"'
+                        message: '&#128221; Введите свою группу. Как указано на официальном сайте.\n\nКак правильно:\n&#10004; 107\n&#10004; 10\n&#10004; 201-3\n&#10004; 517з\n\nКак НЕ правильно:\n&#10060; "107"\n&#10060; группа 201-3',
+                        keyboard: Keyboard.keyboard(GenerateKeyboards(groups.map((_group) => {
+                            return {
+                                command: _group,
+                                text: _group
+                            }
+                        }), 10, 4, 2))
                     })
-                } else if (type === "teacher") {
+
+                } else
+                if (type === 1) {
+                    const teachers = await getTeachers()
+                    const families = unique(teachers.response.map((teacher) => {
+                        return teacher["FIO"].split(" ").map((n, pos) => {
+                            if (pos === 0) return `${n} `
+                            else return `${n[0]}.`
+                        }).join("")
+                    })).sort(() => Math.random() - 0.5);
+
                     return context.send({
-                        message: 'Введите свою фамилию и инициалы. Пример(Все знаки точки и пробелы учитываються, пишите в точности как в образце, только себя): \nКонобеев В.В.'
+                        message: '&#128221; Введите свою фамилию и инициалы.\n\nКак правильно:\n&#10004; Конобеев В.В.\n &#10004; Дятлова Л.И.\n &#10004; Еркибаева Л.Х.\n\nКак НЕ правильно:\n&#10060; Конобеев В.В \n&#10060; Дятлова Л И\n&#10060; Еркибаева',
+                        keyboard: Keyboard.keyboard(GenerateKeyboards(families.map((_family) => {
+                            return {
+                                command: _family,
+                                text: _family
+                            }
+                        }), 10, 3, 2))
                     })
                 }
             }
@@ -49,25 +81,20 @@ bot.sceneManager.addScenes([
             return context.scene.step.next()
         },
         async (context) => {
+            await context.setActivity()
+
             const {type, param} = await context.scene.state
 
-            // Сохранение данных в БД
-            const user = await users.asyncFindOne({_id: context.peerId})
+            const user = await User.findOne({where: {peerId: context.peerId}})
             if (user) {
-                await users.asyncUpdate({_id: context.peerId}, {
-                    $set: {
-                        type: type,
-                        param: param
-                    }
-                }, {})
+                await user.update({type: type, param: param});
             } else {
-                await users.asyncInsert({_id: context.peerId, type: type, param: param})
+                await User.create({peerId: context.peerId, type: type, param: param});
             }
 
             return context.scene.step.next()
         },
         async (context) => {
-            console.log("BOT: ", `new user register from by id - ${context.peerId}: type - ${context.scene.state.type}: param - ${context.scene.state.param}`)
             await context.send({
                 message: "Замечательно! Теперь вы можете получить своё расписание.",
                 keyboard: ifLoginKeyboard
