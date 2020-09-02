@@ -20,7 +20,7 @@ require("./commands/commands");
 const port = parseInt(process.env.PORT) || 3000;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield database_1.default.sync({ force: true });
+        yield database_1.default.sync({ force: false });
         console.log("Database connected successfully.");
         yield bot_1.default.updates.startWebhook({ port: port });
         console.log("The bot has been successfully launched on the port:", port);

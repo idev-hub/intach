@@ -11,7 +11,7 @@ const port = parseInt(process.env.PORT) || 3000;
 
 (async () => {
     try {
-        await db.sync({force: true})
+        await db.sync({force: false})
 
         console.log("Database connected successfully.")
 
