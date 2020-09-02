@@ -115,4 +115,6 @@ out
 .yarn/install-state.gz
 .pnp.*
 
+.idea
+compressor.js
 /.idea/
