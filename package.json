@@ -1,6 +1,6 @@
 {
     "name": "intach",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Получайте актуальное расписание в личные сообщения в Вконтакте",
     "main": "dist/index.js",
     "scripts": {
@@ -27,6 +27,8 @@
         "luxon": "^1.22.0",
         "mysql2": "^2.1.0",
         "node-fetch": "^2.6.0",
+        "pg": "^8.3.3",
+        "pg-hstore": "^2.3.3",
         "sequelize": "^6.3.5",
         "vk-io": "^4.0.1"
     },

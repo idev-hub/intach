@@ -24,6 +24,7 @@ const port = parseInt(process.env.PORT) || 3000;
         console.log("Database connected successfully.");
         yield bot_1.default.updates.startWebhook({ port: port });
         console.log("The bot has been successfully launched on the port:", port);
+        console.log(process.env.NODE_ENV);
     }
     catch (e) {
         console.error(e);
