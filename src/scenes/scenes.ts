@@ -25,16 +25,17 @@ bot.sceneManager.addScenes([
                 })
             }
 
+            if (context.messagePayload && (context.messagePayload.command === 0 || context.messagePayload.command === 1)) {
+                context.scene.state.type = context.messagePayload.command
+                return context.scene.step.next()
+            } else
             if (context.text === "ученик") {
-
                 context.scene.state.type = 0
                 return context.scene.step.next()
 
             } else if (context.text === "учитель") {
-
                 context.scene.state.type = 1
                 return context.scene.step.next()
-
             } else {
                 return context.send({
                     message: 'Введите учитель или ученик. Или воспользуйтесь клавиатурой.',
@@ -62,7 +63,8 @@ bot.sceneManager.addScenes([
                         }), 10, 4, 2))
                     })
 
-                } else if (type === 1) {
+                } else
+                if (type === 1) {
                     const teachers = await getTeachers()
                     const families = unique(teachers.response.map((teacher) => {
                         return teacher["FIO"].split(" ").map((n, pos) => {

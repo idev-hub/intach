@@ -32,7 +32,11 @@ bot_1.default.sceneManager.addScenes([
                     keyboard: typeUserKeyboard_1.default
                 });
             }
-            if (context.text === "ученик") {
+            if (context.messagePayload && (context.messagePayload.command === 0 || context.messagePayload.command === 1)) {
+                context.scene.state.type = context.messagePayload.command;
+                return context.scene.step.next();
+            }
+            else if (context.text === "ученик") {
                 context.scene.state.type = 0;
                 return context.scene.step.next();
             }
