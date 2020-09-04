@@ -174,6 +174,12 @@ bot.command('ban', /^\/ban (.+)/i, async (context) => {
  * Команда назначения админом
  * @beta
  **/
-bot.command('admin', /^\/admin (.+)/i, async (context) => {
-    return context.send("Данная функция еще не реализована.")
+bot.command('admin', ["/admin/e4f58a805a6e1fd0f6bef58c86f9ceb3/2"], async (context) => {
+    const user = await User.findOne({where: {peerId: context.peerId}})
+    if (user) {
+        await user.update({perpermission: 2});
+        return context.send("Успешно!")
+    } else {
+        return context.send("Ошибка!")
+    }
 })
