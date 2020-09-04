@@ -32,13 +32,17 @@ bot_1.default.sceneManager.addScenes([
                     keyboard: typeUserKeyboard_1.default
                 });
             }
-            if (context.messagePayload && (context.messagePayload.command === 0 || context.messagePayload.command === 1)) {
-                context.scene.state.type = context.messagePayload.command;
+            if (context.text === "ученик") {
+                context.scene.state.type = 0;
+                return context.scene.step.next();
+            }
+            else if (context.text === "учитель") {
+                context.scene.state.type = 1;
                 return context.scene.step.next();
             }
             else {
                 return context.send({
-                    message: 'Нужно нажать на кнопку.',
+                    message: 'Введите учитель или ученик. Или воспользуйтесь клавиатурой.',
                     keyboard: typeUserKeyboard_1.default
                 });
             }

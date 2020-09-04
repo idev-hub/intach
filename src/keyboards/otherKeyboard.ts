@@ -10,10 +10,10 @@ export default Keyboard.builder()
     })
     .row()
     .textButton({
-        label: "Инструкция по боту",
+        label: "Написать",
         payload: {
-            command: "help"
+            command: "support"
         },
-        color: Keyboard.SECONDARY_COLOR
+        color: Keyboard.NEGATIVE_COLOR
     })
     .inline()

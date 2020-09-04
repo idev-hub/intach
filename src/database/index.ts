@@ -1,20 +1,24 @@
-import {Sequelize} from "sequelize";
+import {Sequelize} from 'sequelize';
 
-const db = new Sequelize(process.env.DBNAME, process.env.DBUSER, process.env.DBPASSWORD, {
-    host: process.env.DBHOST,
-    dialect: "mysql"
-});
+let sequelize
 
-// const db = new Sequelize(process.env.POSTQRESS_URL, {
-//     dialect: 'postgres',
-//     protocol: 'postgres',
-//     dialectOptions: {
-//         ssl: {
-//             require: true,
-//             rejectUnauthorized: false,
-//         }
-//     },
-//     ssl: true
-// });
+if (process.env.NODE_ENV === "development") {
+    sequelize = new Sequelize(process.env.DBNAME, process.env.DBUSER, process.env.DBPASSWORD, {
+        host: process.env.DBHOST,
+        dialect: "mysql",
+    });
+} else if (process.env.NODE_ENV === "production") {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false,
+            }
+        },
+        ssl: true,
+    });
+}
 
-export default db;
+export default sequelize;

@@ -21,11 +21,11 @@ const User = db.define("user", {
         allowNull: false,
         defaultValue: false
     },
-    isAdmin: {
-        type: DataTypes.BOOLEAN,
+    perpermission: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: false
-    }
-});
+        defaultValue: 1
+    },
+})
 
 export default User;

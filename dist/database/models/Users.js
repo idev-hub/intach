@@ -25,10 +25,10 @@ const User = index_1.default.define("user", {
         allowNull: false,
         defaultValue: false
     },
-    isAdmin: {
-        type: sequelize_1.DataTypes.BOOLEAN,
+    perpermission: {
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: false
-    }
+        defaultValue: 1
+    },
 });
 exports.default = User;

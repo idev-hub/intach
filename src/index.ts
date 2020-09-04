@@ -1,17 +1,15 @@
-import User from "./database/models/Users";
-
 require('dotenv').config()
-import db from "./database"
+
+import sequelize from "./database";
 import bot from "./services/bot"
 import './scenes/scenes'
 import './commands/commands'
-
 
 const port = parseInt(process.env.PORT) || 3000;
 
 (async () => {
     try {
-        await db.sync({force: false})
+        await sequelize.sync({force: process.env.NODE_ENV !== "development"})
 
         console.log("Database connected successfully.")
 
@@ -24,9 +22,3 @@ const port = parseInt(process.env.PORT) || 3000;
         console.error(e)
     }
 })();
-
-
-
-
-
-

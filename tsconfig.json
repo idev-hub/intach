@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "ES6",
+        "target": "es6", // or a more recent ecmascript version
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "lib": [
             "ES6",
             "dom"
         ],
         "moduleResolution": "node",
         "sourceMap": false,
-        "emitDecoratorMetadata": false,
-        "experimentalDecorators": false,
         "esModuleInterop":  true,
         "removeComments": true,
         "outDir": "dist",

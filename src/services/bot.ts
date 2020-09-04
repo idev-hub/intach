@@ -20,7 +20,6 @@ export class Bot extends VK {
             conditions = [conditions]
         }
 
-
         this.hearManager.hear(
             [
                 (text, {state}) => (

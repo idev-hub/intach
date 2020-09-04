@@ -1,129 +1,135 @@
+import User from "../database/models/Users";
 import bot from "../services/bot";
-import {getTeachers, getTimetableOfGroup, getTimetableOfTeacher} from "../utils/fetches";
 import otherKeyboard from "../keyboards/otherKeyboard";
 import ifLoginKeyboard from "../keyboards/ifLoginKeyboard";
-import supportKeyboard from "../keyboards/supportKeyboard";
 import Luxon from "../utils/Luxon";
-import {getTimetable, translated} from "../services/timetable";
+import {getTimetable} from "../services/timetable";
 import {Keyboard} from "vk-io";
-
-const commands = [
-    {
-        name: "start",
-        description: "Команда добавления/обновления личных данных.",
-        handler: (context) => {
-            return context.scene.enter("start-scene")
-        }
-    },
-    {
-        name: "keyboard",
-        description: "Если у вас каким-то образом пропала клавиатура, её можно обновить этой коммандой.",
-        handler: (context) => {
-            return context.send({
-                message: "Клавиатура обновлена!",
-                keyboard: ifLoginKeyboard
-            })
-        }
-    },
-    {
-        name: "yesterday",
-        description: "Команда получения расписания за ВЧЕРА.",
-        handler: async (context) => {
-            return context.send({
-                message: await getTimetable(context, new Luxon().subtract(24).pin()),
-                keyboard: Keyboard.builder()
-                    .textButton({
-                        label: "Завтра",
-                        payload: {
-                            command: "tomorrow"
-                        },
-                        color: Keyboard.POSITIVE_COLOR
-                    })
-                    .inline()
-            })
-        }
-    },
-    {
-        name: "today",
-        description: "Команда получения расписания за СЕГОДНЯ.",
-        handler: async (context) => {
-            return context.send({
-                message: await getTimetable(context, new Luxon().pin()),
-                keyboard: Keyboard.builder()
-                    .textButton({
-                        label: "Завтра",
-                        payload: {
-                            command: "tomorrow"
-                        },
-                        color: Keyboard.POSITIVE_COLOR
-                    }).inline()
-            })
-        }
-    },
-    {
-        name: "tomorrow",
-        description: "Команда получения расписания на ЗАВТРА.",
-        handler: async (context) => {
-            return context.send({
-                message: await getTimetable(context, new Luxon().add(24).pin()),
-                keyboard: Keyboard.builder()
-                    .textButton({
-                        label: "Послезавтра",
-                        payload: {
-                            command: "after-tomorrow"
-                        },
-                        color: Keyboard.POSITIVE_COLOR
-                    })
-                    .inline()
-            })
-        }
-    },
-    {
-        name: "after-tomorrow",
-        description: "Команда получения расписания на ПОСЛЕЗАВТРА.",
-        handler: async (context) => {
-            return context.send({
-                message: await getTimetable(context, new Luxon().add(48).pin()),
-                keyboards: Keyboard.builder()
-                    .textButton({
-                        label: "Завтра",
-                        payload: {
-                            command: "tomorrow"
-                        },
-                        color: Keyboard.POSITIVE_COLOR
-                    })
-                    .inline()
-            })
-        }
-    },
-    // {
-    //     name: "support",
-    //     description: "Команда для связи с АДМИНИСТРАЦИЕЙ.",
-    //     handler: (context) => {
-    //         console.log("support")
-    //     }
-    // },
-    // {
-    //     name: `date ${new Luxon().pin()}`,
-    //     description: "Команда для получения расписания на определенный день.",
-    //     not: true
-    // },
-]
-
-for (const command of commands) {
-    if (!command["not"]) bot.command(command.name, command.handler)
-}
+import {randomInt} from "../utils/Random";
 
 /**
- * Команда ПОМОЩЬ
+ * Команда получения расписания на ПОСЛЕЗАВТРА."
  * @beta
  **/
-bot.command('help', (context) => {
-    let template = ""
-    for (const command of commands) {
-        template += `["/${command.name}"] - ${command.description}\n`
-    }
-    return context.send(template)
+bot.command('after-tomorrow', ["послезавтра", "пз"], async (context) => {
+    return context.send({
+        message: await getTimetable(context, new Luxon().add(48).pin()),
+        keyboard: Keyboard.builder()
+            .textButton({
+                label: "Завтра",
+                payload: {
+                    command: "tomorrow"
+                },
+                color: Keyboard.POSITIVE_COLOR
+            })
+            .textButton({
+                label: "Сегодня",
+                payload: {
+                    command: "today"
+                },
+                color: Keyboard.PRIMARY_COLOR
+            })
+            .inline()
+    })
+})
+
+/**
+ * Команда получения расписания на ЗАВТРА.
+ * @beta
+ **/
+bot.command('tomorrow', ["завтра", "з"], async (context) => {
+    return context.send({
+        message: await getTimetable(context, new Luxon().add(24).pin()),
+        keyboard: Keyboard.builder()
+            .textButton({
+                label: "Послезавтра",
+                payload: {
+                    command: "after-tomorrow"
+                },
+                color: Keyboard.POSITIVE_COLOR
+            })
+            .textButton({
+                label: "Сегодня",
+                payload: {
+                    command: "today"
+                },
+                color: Keyboard.PRIMARY_COLOR
+            })
+            .inline()
+    })
+})
+
+/**
+ * Команда получения расписания за СЕГОДНЯ.
+ * @beta
+ **/
+bot.command('today', ["сегодня", "с"], async (context) => {
+    return context.send({
+        message: await getTimetable(context, new Luxon().pin()),
+        keyboard: Keyboard.builder()
+            .textButton({
+                label: "Завтра",
+                payload: {
+                    command: "tomorrow"
+                },
+                color: Keyboard.POSITIVE_COLOR
+            })
+            .textButton({
+                label: "Послезавтра",
+                payload: {
+                    command: "after-tomorrow"
+                },
+                color: Keyboard.POSITIVE_COLOR
+            })
+            .inline()
+    })
+})
+
+/**
+ * Команда получения расписания за ВЧЕРА.
+ * @beta
+ **/
+bot.command('yesterday',["вчера", "в"], async (context) => {
+    return context.send({
+        message: await getTimetable(context, new Luxon().subtract(24).pin()),
+        keyboard: Keyboard.builder()
+            .textButton({
+                label: "Завтра",
+                payload: {
+                    command: "tomorrow"
+                },
+                color: Keyboard.POSITIVE_COLOR
+            })
+            .textButton({
+                label: "Сегодня",
+                payload: {
+                    command: "today"
+                },
+                color: Keyboard.PRIMARY_COLOR
+            })
+            .inline()
+    })
+})
+
+/**
+ * Команда КЛАВИАТУРА
+ * Обновление клавиатуры пользователя
+ * @beta
+ **/
+bot.command('keyboard', ["клава", "клавиатура"], (context) => {
+    return context.send({
+        message: "Клавиатура обновлена!",
+        keyboard: ifLoginKeyboard
+    })
+})
+
+/**
+ * Команда НАЧАТЬ
+ * Обновление или добавление личных данных пользователя
+ * @beta
+ **/
+bot.command('start', ["начать", "start"], (context) => {
+    return context.scene.enter("start-scene")
 })
 
 
@@ -131,35 +137,43 @@ bot.command('help', (context) => {
  * Команда прочих команд
  * @beta
  **/
-bot.command('other', async (context) => {
-    // await context.send({
-    //     message: "Вы можете сообщить об ошибках в боте или предложить крутые идеи для него, нажав на кнопку ниже.",
-    //     keyboard: supportKeyboard
-    // })
+bot.command('other', ["прочее", "еще"], (context) => {
     return context.send({
-        message: "Еще команды:",
+        message: `Вы можете сообщить об ошибках в боте, предложить крутые идеи для него или просто пообщаться с админами, нажав на кнопку "Написать".\n`,
         keyboard: otherKeyboard
     })
 })
 
-
 /**
- * Команда получение расписания на определенную дату
+ * Команда для связи с АДМИНИСТРАЦИЕЙ.
  * @beta
  **/
-bot.command('date', /^\/date (.+)/i, async (context) => {
-    // const date = context.$match[1].split('').join('')
-    //
-    // try {
-    //     const timetable = await getTimetableOfGroup(date, "107")
-    //
-    //     if (timetable.status === 0) {
-    //         await context.send(JSON.stringify(timetable.response))
-    //     } else {
-    //         await context.send(timetable.response.toString())
-    //     }
-    // } catch (e) {
-    //     console.error(e)
-    // }
-    return  context.send("Данная функция еще не реализована.")
+bot.command('support', ["помощь", "помогите"], async (context) => {
+    const users = await User.findAll({where: {perpermission: 2}})
+
+    for (let i = 0; i < users.length; i++) {
+        await bot.api.messages.send({
+            peer_id: users[i].peerId,
+            random_id: randomInt(0, 31),
+            message: `Вас запросил - @id${context.peerId}, ответьте ему.\nСсылка на беседу:\nvk.com/gim147858640?sel=${context.peerId}`
+        })
+    }
+
+    return context.send("Заявка отправлена. Как только администоры увидят, они вам ответят.")
+})
+
+/**
+ * Команда Бана
+ * @beta
+ **/
+bot.command('ban', /^\/ban (.+)/i, async (context) => {
+    return context.send("Данная функция еще не реализована.")
+})
+
+/**
+ * Команда назначения админом
+ * @beta
+ **/
+bot.command('admin', /^\/admin (.+)/i, async (context) => {
+    return context.send("Данная функция еще не реализована.")
 })

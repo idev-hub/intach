@@ -11,10 +11,10 @@ exports.default = vk_io_1.Keyboard.builder()
 })
     .row()
     .textButton({
-    label: "Инструкция по боту",
+    label: "Написать",
     payload: {
-        command: "help"
+        command: "support"
     },
-    color: vk_io_1.Keyboard.SECONDARY_COLOR
+    color: vk_io_1.Keyboard.NEGATIVE_COLOR
 })
     .inline();
