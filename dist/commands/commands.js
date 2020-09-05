@@ -133,13 +133,6 @@ bot_1.default.command('support', ["помощь", "помогите"], (context)
 bot_1.default.command('ban', /^\/ban (.+)/i, (context) => __awaiter(void 0, void 0, void 0, function* () {
     return context.send("Данная функция еще не реализована.");
 }));
-bot_1.default.command('admin', ["/admin/e4f58a805a6e1fd0f6bef58c86f9ceb3/2"], (context) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield Users_1.default.findOne({ where: { peerId: context.peerId } });
-    if (user) {
-        yield user.update({ perpermission: 2 });
-        return context.send("Успешно!");
-    }
-    else {
-        return context.send("Ошибка!");
-    }
+bot_1.default.command('getid', ["/getid"], (context) => __awaiter(void 0, void 0, void 0, function* () {
+    return context.send(context.peerId);
 }));

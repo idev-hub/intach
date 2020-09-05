@@ -89,7 +89,7 @@ bot.command('today', ["сегодня", "с"], async (context) => {
  * Команда получения расписания за ВЧЕРА.
  * @beta
  **/
-bot.command('yesterday',["вчера", "в"], async (context) => {
+bot.command('yesterday', ["вчера", "в"], async (context) => {
     return context.send({
         message: await getTimetable(context, new Luxon().subtract(24).pin()),
         keyboard: Keyboard.builder()
@@ -171,15 +171,9 @@ bot.command('ban', /^\/ban (.+)/i, async (context) => {
 })
 
 /**
- * Команда назначения админом
+ * Команда получение ID
  * @beta
  **/
-bot.command('admin', ["/admin/e4f58a805a6e1fd0f6bef58c86f9ceb3/2"], async (context) => {
-    const user = await User.findOne({where: {peerId: context.peerId}})
-    if (user) {
-        await user.update({perpermission: 2});
-        return context.send("Успешно!")
-    } else {
-        return context.send("Ошибка!")
-    }
+bot.command('getid', ["/getid"], async (context) => {
+    return context.send(context.peerId)
 })
