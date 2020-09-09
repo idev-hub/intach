@@ -1,13 +1,11 @@
 {
     "name": "intach",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Получайте актуальное расписание в личные сообщения в Вконтакте",
     "main": "dist/index.js",
     "scripts": {
-        "start": "node dist/index.js",
-        "build": "tsc --build",
-        "build:watch": "tsc --watch",
-        "dev": "nodemon server/index.js"
+        "start": "ts-node src/index.ts --production",
+        "dev": "ts-node src/index.ts --development"
     },
     "repository": {
         "type": "git",
@@ -38,6 +36,7 @@
         "@types/validator": "^13.1.0",
         "async": "^3.2.0",
         "nodemon": "^2.0.2",
+        "ts-node": "^9.0.0",
         "typescript": "^3.8.3"
     }
 }

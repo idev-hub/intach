@@ -9,7 +9,7 @@ const port = parseInt(process.env.PORT) || 3000;
 
 (async () => {
     try {
-        await sequelize.sync({force: process.env.NODE_ENV !== "development"})
+        await sequelize.sync({force: false})
 
         console.log("Database connected successfully.")
 
