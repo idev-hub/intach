@@ -72,8 +72,9 @@ class Bot extends vk_io_1.VK {
                             const oldParam = result.toJSON()["param"];
                             const newParam = command.replace("!", "");
                             result.update({ param: newParam }).then(() => {
+                                context.session.peer = undefined;
                                 return context.editMessage({
-                                    message: `Ваша группа изменина с ${oldParam} на ${newParam}.`
+                                    message: `Ваша группа изменена с ${oldParam} на ${newParam}.`
                                 });
                             });
                         }
