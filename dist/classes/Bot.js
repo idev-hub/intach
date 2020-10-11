@@ -21,6 +21,7 @@ const antispam_1 = __importDefault(require("../middlewares/antispam"));
 const authorized_1 = __importDefault(require("../middlewares/authorized"));
 const random_1 = require("../utils/random");
 const SubscribeNews_1 = __importDefault(require("../models/SubscribeNews"));
+const Peer_1 = __importDefault(require("../models/Peer"));
 class Bot extends vk_io_1.VK {
     constructor(param) {
         super(param);
@@ -58,12 +59,28 @@ class Bot extends vk_io_1.VK {
             }
             return next();
         }));
-        this.updates.on('message', (ctx, next) => ctx.isOutbox ? undefined : next());
         this.updates.on('message_new', this.sessionManager.middleware);
         this.updates.on('message_new', this.sceneManager.middleware);
         this.updates.on('message_new', this.sceneManager.middlewareIntercept);
-        this.updates.on('message_new', (context, next) => {
+        this.updates.on('message', (context, next) => {
             const { messagePayload, text } = context;
+            if (context.isOutbox) {
+                const command = context.text.toLowerCase().trim();
+                if (command[0] === "!") {
+                    Peer_1.default.findOne({ where: { peerId: context.peerId } }).then(result => {
+                        if (result) {
+                            const oldParam = result.toJSON()["param"];
+                            const newParam = command.replace("!", "");
+                            result.update({ param: newParam }).then(() => {
+                                return context.editMessage({
+                                    message: `Ваша группа изменина с ${oldParam} на ${newParam}.`
+                                });
+                            });
+                        }
+                    });
+                }
+                return undefined;
+            }
             context.text = text.toLowerCase();
             context.state.command = messagePayload && messagePayload.command
                 ? messagePayload.command.toLowerCase()

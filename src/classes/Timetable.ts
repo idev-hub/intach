@@ -23,7 +23,6 @@ export class Timetable {
 
     public async getTableTemplate(date: Luxon) {
         const data = await this.getTable(date)
-        console.log(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`))
         if (data.count > 0) {
             let template = setTemplate(data)
             template += `📅 ${date.pin()}, ${this.param.toUpperCase()}`

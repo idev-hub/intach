@@ -18,26 +18,11 @@ const SubscribeNews_1 = __importDefault(require("../models/SubscribeNews"));
 const random_1 = require("../utils/random");
 const Luxon_1 = __importDefault(require("../classes/Luxon"));
 const Timetable_1 = require("../classes/Timetable");
-function getAttachmentDayWeek(num) {
-    switch (num) {
-        case 1:
-            return "photo-147858640_457239298";
-        case 2:
-            return "photo-147858640_457239304";
-        case 3:
-            return "photo-147858640_457239303";
-        case 4:
-            return "photo-147858640_457239302";
-        case 5:
-            return "photo-147858640_457239301";
-        case 6:
-            return "photo-147858640_457239300";
-        case 7:
-            return "photo-147858640_457239299";
-        default:
-            return "";
-    }
-}
+const getAttachmentDayWeek_1 = require("../utils/getAttachmentDayWeek");
+const isAdmin_1 = __importDefault(require("../middlewares/isAdmin"));
+bot_1.default.command("test", ["!", "test"], (context) => __awaiter(void 0, void 0, void 0, function* () {
+    const admin = yield isAdmin_1.default(context);
+}));
 bot_1.default.command("start", ["начать", "start"], (context) => {
     return context.scene.enter("start-scene");
 });
@@ -47,7 +32,7 @@ bot_1.default.command('today', ["сегодня", "today"], (context) => __await
     const date = new Luxon_1.default();
     return context.send({
         message: yield table.getTableTemplate(date),
-        attachment: getAttachmentDayWeek(date.week()),
+        attachment: getAttachmentDayWeek_1.getAttachmentDayWeek(date.week()),
         keyboard: vk_io_1.Keyboard.builder()
             .textButton({
             label: "Завтра",
@@ -71,7 +56,7 @@ bot_1.default.command('tomorrow', ["завтра", "tomorrow"], (context) => __a
     let table = new Timetable_1.Timetable(context.session.peer.param);
     return context.send({
         message: yield table.getTableTemplate(date),
-        attachment: getAttachmentDayWeek(date.week()),
+        attachment: getAttachmentDayWeek_1.getAttachmentDayWeek(date.week()),
         keyboard: vk_io_1.Keyboard.builder()
             .textButton({
             label: "Сегодня",
@@ -95,7 +80,7 @@ bot_1.default.command('after-tomorrow', ["послезавтра", "after-tomorr
     const date = new Luxon_1.default().add(48);
     return context.send({
         message: yield table.getTableTemplate(date),
-        attachment: getAttachmentDayWeek(date.week()),
+        attachment: getAttachmentDayWeek_1.getAttachmentDayWeek(date.week()),
         keyboard: vk_io_1.Keyboard.builder()
             .textButton({
             label: "Сегодня",
@@ -126,7 +111,7 @@ bot_1.default.command('week', ["На неделю", "week"], (context) => __awai
                 template += `📅 ${date.pin()}, ${context.session.peer.param.toUpperCase()}`;
                 yield context.send({
                     message: template,
-                    attachment: getAttachmentDayWeek(date.week()),
+                    attachment: getAttachmentDayWeek_1.getAttachmentDayWeek(date.week()),
                 });
             }
         }

@@ -32,7 +32,6 @@ class Timetable {
     getTableTemplate(date) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = yield this.getTable(date);
-            console.log(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`));
             if (data.count > 0) {
                 let template = exports.setTemplate(data);
                 template += `📅 ${date.pin()}, ${this.param.toUpperCase()}`;

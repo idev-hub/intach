@@ -6,6 +6,7 @@ import antispam from "../middlewares/antispam";
 import authorized from "../middlewares/authorized";
 import {randomInt} from "../utils/random";
 import SubscribeNews from "../models/SubscribeNews";
+import Peer from "../models/Peer";
 
 export class Bot extends VK {
     readonly hearManager: HearManager<MessageContext> = new HearManager<MessageContext>()
@@ -44,14 +45,32 @@ export class Bot extends VK {
             return next()
         })
 
-        this.updates.on('message', (ctx, next) => ctx.isOutbox ? undefined : next())
         this.updates.on('message_new', this.sessionManager.middleware)
 
         this.updates.on('message_new', this.sceneManager.middleware)
         this.updates.on('message_new', this.sceneManager.middlewareIntercept)
 
-        this.updates.on('message_new', (context, next) => {
+        this.updates.on('message', (context, next) => {
             const {messagePayload, text} = context
+            if(context.isOutbox){
+                const command = context.text.toLowerCase().trim()
+                if(command[0] === "!"){
+                    Peer.findOne({where: {peerId: context.peerId}}).then(result => {
+                        if(result){
+                            const oldParam = result.toJSON()["param"]
+                            const newParam = command.replace("!", "")
+                            result.update({param: newParam}).then(() => {
+                                return context.editMessage({
+                                    message: `Ваша группа изменина с ${oldParam} на ${newParam}.`
+                                })
+                            })
+                        }
+                    })
+                }
+                return undefined
+            }
+
+
             context.text = text.toLowerCase()
             context.state.command = messagePayload && messagePayload.command
                 ? messagePayload.command.toLowerCase()

@@ -4,27 +4,12 @@ import SubscribeNews from "../models/SubscribeNews";
 import {randomInt} from "../utils/random";
 import Luxon from "../classes/Luxon";
 import {setTemplate, Timetable} from "../classes/Timetable";
+import {getAttachmentDayWeek} from "../utils/getAttachmentDayWeek";
+import isAdmin from "../middlewares/isAdmin";
 
-function getAttachmentDayWeek(num: number): string {
-    switch (num) {
-        case 1:
-            return "photo-147858640_457239298"
-        case 2:
-            return "photo-147858640_457239304"
-        case 3:
-            return "photo-147858640_457239303"
-        case 4:
-            return "photo-147858640_457239302"
-        case 5:
-            return "photo-147858640_457239301"
-        case 6:
-            return "photo-147858640_457239300"
-        case 7:
-            return "photo-147858640_457239299"
-        default:
-            return ""
-    }
-}
+bot.command("test", ["!", "test"], async (context) => {
+    const admin = await isAdmin(context)
+})
 
 /**
  * Команда НАЧАТЬ
