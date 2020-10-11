@@ -5,10 +5,10 @@ import {randomInt} from "../utils/random";
 import Luxon from "../classes/Luxon";
 import {setTemplate, Timetable} from "../classes/Timetable";
 import {getAttachmentDayWeek} from "../utils/getAttachmentDayWeek";
-import isAdmin from "../middlewares/isAdmin";
 
-bot.command("test", ["!", "test"], async (context) => {
-    const admin = await isAdmin(context)
+bot.command("ok", ["ok", "ок"], async (context) => {
+    if (context.session.peer)
+        context.session.peer = undefined
 })
 
 /**

@@ -19,9 +19,9 @@ const random_1 = require("../utils/random");
 const Luxon_1 = __importDefault(require("../classes/Luxon"));
 const Timetable_1 = require("../classes/Timetable");
 const getAttachmentDayWeek_1 = require("../utils/getAttachmentDayWeek");
-const isAdmin_1 = __importDefault(require("../middlewares/isAdmin"));
-bot_1.default.command("test", ["!", "test"], (context) => __awaiter(void 0, void 0, void 0, function* () {
-    const admin = yield isAdmin_1.default(context);
+bot_1.default.command("ok", ["ok", "ок"], (context) => __awaiter(void 0, void 0, void 0, function* () {
+    if (context.session.peer)
+        context.session.peer = undefined;
 }));
 bot_1.default.command("start", ["начать", "start"], (context) => {
     return context.scene.enter("start-scene");
