@@ -80,7 +80,7 @@ class Bot extends vk_io_1.VK {
                                             command: "ok"
                                         },
                                         color: vk_io_1.Keyboard.POSITIVE_COLOR
-                                    })
+                                    }).inline()
                                 });
                             });
                         }

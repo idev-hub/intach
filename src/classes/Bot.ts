@@ -68,7 +68,7 @@ export class Bot extends VK {
                                             command: "ok"
                                         },
                                         color: Keyboard.POSITIVE_COLOR
-                                    })
+                                    }).inline()
                                 })
                             })
                         }
