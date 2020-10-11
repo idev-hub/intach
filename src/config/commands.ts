@@ -72,10 +72,10 @@ bot.command('today', ["сегодня", "today"], async (context) => {
  **/
 bot.command('tomorrow', ["завтра", "tomorrow"], async (context) => {
     await context.setActivity()
+    const date = new Luxon().add(24)
 
     let table = new Timetable(context.session.peer.param)
 
-    const date = new Luxon().add(24)
     return context.send({
         message: await table.getTableTemplate(date),
         attachment: getAttachmentDayWeek(date.week()),
@@ -141,13 +141,11 @@ bot.command('week', ["На неделю", "week"], async (context) => {
         const date = new Luxon().add(time)
 
         if (date.week() !== 7) {
-            await context.setActivity()
-
             const data = await table.getTable(date)
             if (data.count > 0) {
 
                 let template = setTemplate(data)
-                template += `📅 ${date.pin()}, ${context.session.peer.param}`
+                template += `📅 ${date.pin()}, ${context.session.peer.param.toUpperCase()}`
 
                 await context.send({
                     message: template,

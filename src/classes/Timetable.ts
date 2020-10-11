@@ -23,20 +23,21 @@ export class Timetable {
 
     public async getTableTemplate(date: Luxon) {
         const data = await this.getTable(date)
-
+        console.log(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`))
         if (data.count > 0) {
             let template = setTemplate(data)
-            template += `📅 ${date.pin()}, ${this.param}`
+            template += `📅 ${date.pin()}, ${this.param.toUpperCase()}`
             return template
         } else {
-            let template = `📅 ${date.pin()}, ${this.param}`
-            template+=`\nРаписание не найдено`
+            let template = `Раписание не найдено\n\n`
+            template += `📅 ${date.pin()}, ${this.param.toUpperCase()}`
             return template
         }
     }
+
     public async getTable(date: Luxon): Promise<any> {
         try {
-            const response = await axios.post(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`)
+            const response = await axios.post(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`))
             return {
                 count: response.data.length,
                 dayweek: {

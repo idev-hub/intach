@@ -61,7 +61,7 @@ bot_1.default.sceneManager.addScenes([
                         "❌ группа 201-3"
                 });
             }
-            context.scene.state.param = context.text.toLowerCase();
+            context.scene.state.param = context.text.toLowerCase().trim().replace(/\s/g, '');
             return context.scene.step.next();
         }),
         (context) => __awaiter(void 0, void 0, void 0, function* () {

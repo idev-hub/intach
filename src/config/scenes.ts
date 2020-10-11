@@ -53,7 +53,7 @@ bot.sceneManager.addScenes([
                 })
             }
 
-            context.scene.state.param = context.text.toLowerCase()
+            context.scene.state.param = context.text.toLowerCase().trim().replace(/\s/g, '')
             return context.scene.step.next()
         },
         async (context) => {

@@ -32,14 +32,15 @@ class Timetable {
     getTableTemplate(date) {
         return __awaiter(this, void 0, void 0, function* () {
             const data = yield this.getTable(date);
+            console.log(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`));
             if (data.count > 0) {
                 let template = exports.setTemplate(data);
-                template += `📅 ${date.pin()}, ${this.param}`;
+                template += `📅 ${date.pin()}, ${this.param.toUpperCase()}`;
                 return template;
             }
             else {
-                let template = `📅 ${date.pin()}, ${this.param}`;
-                template += `\nРаписание не найдено`;
+                let template = `Раписание не найдено\n\n`;
+                template += `📅 ${date.pin()}, ${this.param.toUpperCase()}`;
                 return template;
             }
         });
@@ -47,7 +48,7 @@ class Timetable {
     getTable(date) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield axios_1.default.post(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`);
+                const response = yield axios_1.default.post(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${this.param}`));
                 return {
                     count: response.data.length,
                     dayweek: {

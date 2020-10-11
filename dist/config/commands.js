@@ -67,8 +67,8 @@ bot_1.default.command('today', ["сегодня", "today"], (context) => __await
 }));
 bot_1.default.command('tomorrow', ["завтра", "tomorrow"], (context) => __awaiter(void 0, void 0, void 0, function* () {
     yield context.setActivity();
-    let table = new Timetable_1.Timetable(context.session.peer.param);
     const date = new Luxon_1.default().add(24);
+    let table = new Timetable_1.Timetable(context.session.peer.param);
     return context.send({
         message: yield table.getTableTemplate(date),
         attachment: getAttachmentDayWeek(date.week()),
@@ -120,11 +120,10 @@ bot_1.default.command('week', ["На неделю", "week"], (context) => __awai
     for (let i = 0; i < 7; i++) {
         const date = new Luxon_1.default().add(time);
         if (date.week() !== 7) {
-            yield context.setActivity();
             const data = yield table.getTable(date);
             if (data.count > 0) {
                 let template = Timetable_1.setTemplate(data);
-                template += `📅 ${date.pin()}, ${context.session.peer.param}`;
+                template += `📅 ${date.pin()}, ${context.session.peer.param.toUpperCase()}`;
                 yield context.send({
                     message: template,
                     attachment: getAttachmentDayWeek(date.week()),
