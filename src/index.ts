@@ -7,7 +7,7 @@ import "./config/commands"
 
 
 const port = parseInt(process.env.PORT) || 3000
-const force = false
+const force = true
 
 database.sync({force: force}).then(async () => {
     console.info("Database sync")
