@@ -18,7 +18,7 @@ const bot_1 = __importDefault(require("./services/bot"));
 require("./config/scenes");
 require("./config/commands");
 const port = parseInt(process.env.PORT) || 3000;
-const force = true;
+const force = false;
 database_1.default.sync({ force: force }).then(() => __awaiter(void 0, void 0, void 0, function* () {
     console.info("Database sync");
     if (process.env.NODE_ENV === "development") {
