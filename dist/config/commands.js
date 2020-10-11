@@ -22,6 +22,7 @@ const getAttachmentDayWeek_1 = require("../utils/getAttachmentDayWeek");
 bot_1.default.command("ok", ["ok", "ок"], (context) => __awaiter(void 0, void 0, void 0, function* () {
     if (context.session.peer)
         context.session.peer = undefined;
+    return context.reply("Информация успешно обновлена");
 }));
 bot_1.default.command("start", ["начать", "start"], (context) => {
     return context.scene.enter("start-scene");

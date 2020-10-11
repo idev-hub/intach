@@ -9,6 +9,8 @@ import {getAttachmentDayWeek} from "../utils/getAttachmentDayWeek";
 bot.command("ok", ["ok", "ок"], async (context) => {
     if (context.session.peer)
         context.session.peer = undefined
+
+    return context.reply("Информация успешно обновлена")
 })
 
 /**
