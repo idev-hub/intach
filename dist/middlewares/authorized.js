@@ -12,21 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require('dotenv').config();
-const database_1 = __importDefault(require("./services/database"));
-const bot_1 = __importDefault(require("./services/bot"));
-require("./config/scenes");
-require("./config/commands");
-const port = parseInt(process.env.PORT) || 3000;
-const force = false;
-database_1.default.sync({ force: force }).then(() => __awaiter(void 0, void 0, void 0, function* () {
-    console.info("Database sync");
-    if (process.env.NODE_ENV === "development") {
-        yield bot_1.default.updates.startPolling();
-        console.info("Bot has been successfully launched on longpole");
+const Peer_1 = __importDefault(require("../models/Peer"));
+const SubscribeNews_1 = __importDefault(require("../models/SubscribeNews"));
+exports.default = (context, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { peerId, session } = context;
+    if (!session.peer) {
+        const peer = yield Peer_1.default.findOne({ where: { peerId: peerId } });
+        if (peer) {
+            let data = peer.toJSON();
+            const subscribe = yield SubscribeNews_1.default.findOne({ where: { peerId: context.peerId } });
+            if (subscribe)
+                data["subscribe"] = subscribe.toJSON();
+            session.peer = data;
+            return next();
+        }
+        else
+            return context.scene.enter('start-scene');
     }
-    else {
-        yield bot_1.default.updates.startWebhook({ port: port });
-        console.info("The bot has been successfully launched on callback and listening on the port:", port);
-    }
-}));
+    else
+        return next();
+});

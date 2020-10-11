@@ -1,24 +1,21 @@
 require('dotenv').config()
 
-import sequelize from "./database";
-import bot from "./services/bot"
-import './scenes/scenes'
-import './commands/commands'
+import database from "./services/database";
+import bot from "./services/bot";
+import "./config/scenes"
+import "./config/commands"
 
-const port = parseInt(process.env.PORT) || 3000;
 
-(async () => {
-    try {
-        await sequelize.sync({force: false})
+const port = parseInt(process.env.PORT) || 3000
+const force = false
 
-        console.log("Database connected successfully.")
-
+database.sync({force: force}).then(async () => {
+    console.info("Database sync")
+    if (process.env.NODE_ENV === "development") {
+        await bot.updates.startPolling()
+        console.info("Bot has been successfully launched on longpole")
+    } else {
         await bot.updates.startWebhook({port: port})
-
-        console.log("The bot has been successfully launched on the port:", port)
-
-        console.log(process.env.NODE_ENV)
-    } catch (e) {
-        console.error(e)
+        console.info("The bot has been successfully launched on callback and listening on the port:", port)
     }
-})();
+})
