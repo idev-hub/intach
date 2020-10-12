@@ -7,6 +7,8 @@ import authorized from "../middlewares/authorized";
 import {randomInt} from "../utils/random";
 import SubscribeNews from "../models/SubscribeNews";
 import Peer from "../models/Peer";
+import {peer} from "../services/peer";
+import getUser = peer.getUser;
 
 export class Bot extends VK {
     readonly hearManager: HearManager<MessageContext> = new HearManager<MessageContext>()
@@ -50,33 +52,24 @@ export class Bot extends VK {
         this.updates.on('message_new', this.sceneManager.middleware)
         this.updates.on('message_new', this.sceneManager.middlewareIntercept)
 
-        this.updates.on('message', (context, next) => {
+        this.updates.on('message', async (context, next) => {
             const {messagePayload, text} = context
             if (context.isOutbox) {
                 const command = context.text.toLowerCase().trim()
                 if (command[0] === "!") {
-                    Peer.findOne({where: {peerId: context.peerId}}).then(result => {
-                        if (result) {
-                            const oldParam = result.toJSON()["param"]
-                            const newParam = command.replace("!", "")
-                            result.update({param: newParam}).then(() => {
-                                return context.editMessage({
-                                    message: `Ваша группа изменена с ${oldParam} на ${newParam}.\nНапишите ок, что бы применить эти данные`,
-                                    keyboard: Keyboard.builder().textButton({
-                                        label: "ок",
-                                        payload: {
-                                            command: "ok"
-                                        },
-                                        color: Keyboard.POSITIVE_COLOR
-                                    }).inline()
-                                })
+                    const user = await getUser(context)
+                    if (user) {
+                        const oldParam = user.toJSON()["param"]
+                        const newParam = command.replace("!", "")
+                        user.update({param: newParam}).then(() => {
+                            return context.editMessage({
+                                message: `Ваша группа изменена с ${oldParam.toUpperCase()} на ${newParam.toUpperCase()}.`
                             })
-                        }
-                    })
+                        })
+                    }
                 }
                 return undefined
             }
-
 
             context.text = text.toLowerCase()
             context.state.command = messagePayload && messagePayload.command
@@ -91,7 +84,7 @@ export class Bot extends VK {
         this.updates.on('message_new', this.hearManager.middleware)
     }
 
-    public readonly command: any = (name: string, conditions: Array<string | RegExp>, handle: any, middlewares: Array<any>) => {
+    public readonly command: any = (name: string, conditions: Array<string | RegExp>, handle: any) => {
         this.hearManager.hear(
             [
                 (text, {state}) => (
