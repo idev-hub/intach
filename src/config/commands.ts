@@ -14,6 +14,24 @@ import {admin} from "../services/admin";
  * Отправляет пользователю рекламу
  * @beta
  **/
+bot.command("users-admin", ["!users"], async (context) => {
+    const isAdmin = await admin.isAdmin(context)
+    if(isAdmin){
+        const users = await peer.getUsers()
+        return context.send({
+            message: users.map((user) => {
+                return `@id${user["peerId"]} - ${user["param"]}`
+            })
+        })
+    }
+})
+
+
+/**
+ * Команда ВЫЗОВА РЕКЛАМЫ
+ * Отправляет пользователю рекламу
+ * @beta
+ **/
 bot.command("ads", ["/ads"], async (context) => {
     return context.reply({
         message: templates.adsTemplate.zaochnik,

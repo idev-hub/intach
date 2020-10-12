@@ -2,6 +2,11 @@ import Peer from "../models/Peer";
 import SubscribeNews from "../models/SubscribeNews";
 
 export namespace peer {
+
+    export const getUsers = async () => {
+        return await Peer.findAll()
+    }
+
     export const setUser = async (context, param: string) => {
         const user = await getUser(context)
         if (user) {
