@@ -8,24 +8,50 @@ import {templates} from "./templates";
 import {keyboards} from "./keyboards";
 import {peer} from "../services/peer";
 import {admin} from "../services/admin";
+import Peer from "../models/Peer";
 
 /**
- * Команда ВЫЗОВА РЕКЛАМЫ
- * Отправляет пользователю рекламу
+ * Команда ПОЛУЧЕНИЯ ПОЛЬЗОВАТЕЛЕЙ
  * @beta
  **/
 bot.command("users-admin", ["!users"], async (context) => {
     const isAdmin = await admin.isAdmin(context)
-    if(isAdmin){
+    if (isAdmin) {
+        await context.setActivity()
         const users = await peer.getUsers()
         return context.send({
-            message: users.map((user) => {
-                return `@id${user["peerId"]} - ${user["param"]}`
+            message: `Пользователей найдено - ${users.length}\n\n` + users.map((user) => {
+                return `${user["peerId"]} - ${user["param"]} (@id${user["peerId"]})\n`
             })
         })
     }
 })
 
+/**
+ * Команда ИЗМЕНЕНИЯ param пользователя
+ * @beta
+ **/
+bot.command("users-set-param-admin", [/!(.+)\s(.+)/i], async (context) => {
+    const isAdmin = await admin.isAdmin(context)
+    if (isAdmin) {
+        await context.setActivity()
+        const peerId = context.$match[1]
+        const param = context.$match[2]
+        const user = await Peer.findOne({where: {peerId: peerId}})
+        if(user) {
+            const temp = `с ${user["param"].toUpperCase()} на ${param.toUpperCase()}.`
+            await bot.api.messages.send({
+                message: `Ваша группа изменена ${temp}`,
+                random_id: randomInt(0, 31),
+                peer_id: peerId
+            })
+            await user.update({param: param})
+            return context.reply("У пользователя @id"+peerId+" изменена группа "+temp)
+        } else {
+            return context.reply("Пользователь не найден.")
+        }
+    }
+})
 
 /**
  * Команда ВЫЗОВА РЕКЛАМЫ
