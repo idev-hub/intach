@@ -19,11 +19,26 @@ bot.command("users-admin", ["!users"], async (context) => {
     if (isAdmin) {
         await context.setActivity()
         const users = await peer.getUsers()
-        return context.send({
-            message: `Пользователей найдено - ${users.length}\n\n` + users.map((user) => {
-                return `${user["peerId"]} - ${user["param"]} (@id${user["peerId"]})\n`
-            })
+        const size = 20
+        const integration = []
+        const temp = users.map((user) => {
+            return `${user["peerId"]}, ${user["param"]}\n`
         })
+
+        for (let i = 0; i < Math.ceil(temp.length / size); i++)
+            integration[i] = temp.slice((i * size), (i * size) + size)
+
+        await context.send({
+            message: `Пользователей найдено - ${users.length}\n\n`
+        })
+
+        for (let i = 0; i < integration.length; i++) {
+            await context.send({
+                message: integration[i].toString()
+            })
+        }
+
+        return
     }
 })
 
@@ -38,7 +53,7 @@ bot.command("users-set-param-admin", [/!(.+)\s(.+)/i], async (context) => {
         const peerId = context.$match[1]
         const param = context.$match[2]
         const user = await Peer.findOne({where: {peerId: peerId}})
-        if(user) {
+        if (user) {
             const temp = `с ${user["param"].toUpperCase()} на ${param.toUpperCase()}.`
             await bot.api.messages.send({
                 message: `Ваша группа изменена ${temp}`,
@@ -46,7 +61,7 @@ bot.command("users-set-param-admin", [/!(.+)\s(.+)/i], async (context) => {
                 peer_id: peerId
             })
             await user.update({param: param})
-            return context.reply("У пользователя @id"+peerId+" изменена группа "+temp)
+            return context.reply("У пользователя @id" + peerId + " изменена группа " + temp)
         } else {
             return context.reply("Пользователь не найден.")
         }
