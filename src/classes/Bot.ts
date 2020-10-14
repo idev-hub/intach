@@ -10,7 +10,6 @@ import {peer} from "../services/peer";
 import getUser = peer.getUser;
 import {keyboards} from "../config/keyboards";
 import Language from "./Language";
-import ru from "../lang/ru";
 
 export class Bot extends VK {
     readonly hearManager: HearManager<MessageContext> = new HearManager<MessageContext>()
@@ -99,8 +98,9 @@ export class Bot extends VK {
             return next()
         })
 
-        this.updates.on('message_new', antispam)
         this.updates.on('message_new', authorized)
+        this.updates.on('message_new', antispam)
+
         this.updates.on('message_new', this.hearManager.middleware)
     }
 
