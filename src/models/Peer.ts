@@ -10,6 +10,11 @@ const Peer = database.define("peer", {
     param: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    lang: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "ru"
     }
 })
 

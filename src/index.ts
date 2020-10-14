@@ -7,9 +7,12 @@ import "./config/commands"
 
 
 const port = parseInt(process.env.PORT) || 3000
-const force = false
+const force = process.env.DBFORCE === "true" || false
+const alter = process.env.DBALTER === "true" || false
 
-database.sync({force: force}).then(async () => {
+console.log(force, alter)
+
+database.sync({force: force, alter: alter}).then(async () => {
     console.info("Database sync")
     if (process.env.NODE_ENV === "development") {
         await bot.updates.startPolling()

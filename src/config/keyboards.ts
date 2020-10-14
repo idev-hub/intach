@@ -1,73 +1,77 @@
 import {Keyboard} from "vk-io";
 
 export namespace keyboards {
-    export const mainKeyboard = Keyboard.keyboard([
-        [
-            Keyboard.textButton({
-                label: "Послезавтра",
-                color: Keyboard.NEGATIVE_COLOR,
-                payload: {
-                    command: "after-tomorrow"
-                }
-            }),
-            Keyboard.textButton({
-                label: "Сегодня",
-                color: Keyboard.PRIMARY_COLOR,
-                payload: {
-                    command: "today"
-                }
-            }),
-            Keyboard.textButton({
-                label: "Завтра",
-                color: Keyboard.POSITIVE_COLOR,
-                payload: {
-                    command: "tomorrow"
-                }
-            })
-        ],
-        [
-            Keyboard.textButton({
-                label: "На неделю",
-                color: Keyboard.NEGATIVE_COLOR,
-                payload: {
-                    command: "week"
-                }
-            }),
-            Keyboard.textButton({
-                label: "Другое",
-                color: Keyboard.POSITIVE_COLOR,
-                payload: {
-                    command: "other"
-                }
-            })
-        ]
-    ])
+    export const mainKeyboard = (context) => {
+        const {lang} = context
+        return Keyboard.keyboard([
+            [
+                Keyboard.textButton({
+                    label: lang.template()["button"]["after_tomorrow"],
+                    color: Keyboard.NEGATIVE_COLOR,
+                    payload: {
+                        command: "after_tomorrow"
+                    }
+                }),
+                Keyboard.textButton({
+                    label: lang.template()["button"]["today"],
+                    color: Keyboard.PRIMARY_COLOR,
+                    payload: {
+                        command: "today"
+                    }
+                }),
+                Keyboard.textButton({
+                    label: lang.template()["button"]["tomorrow"],
+                    color: Keyboard.POSITIVE_COLOR,
+                    payload: {
+                        command: "tomorrow"
+                    }
+                })
+            ],
+            [
+                Keyboard.textButton({
+                    label: lang.template()["button"]["week"],
+                    color: Keyboard.NEGATIVE_COLOR,
+                    payload: {
+                        command: "week"
+                    }
+                }),
+                Keyboard.textButton({
+                    label: lang.template()["button"]["other"],
+                    color: Keyboard.POSITIVE_COLOR,
+                    payload: {
+                        command: "other"
+                    }
+                })
+            ]
+        ])
+    }
     export const otherKeyboard = (context) => {
+        const {lang} = context
         const keyboard = []
 
         keyboard.push([
             Keyboard.textButton({
-                label: "Вызвать администрацию",
+                label: lang.template()["button"]["call_admins"],
                 color: Keyboard.POSITIVE_COLOR,
                 payload: {
-                    command: "call"
+                    command: "call_admins"
                 }
             }),
             Keyboard.urlButton({
-                label: "Справка по боту",
+                label: lang.template()["button"]["reference"],
                 url: "https://vk.com/@in_teach-spravka-po-botu"
             })
         ])
         keyboard.push([
             Keyboard.textButton({
-                label: context.user.subscribe.param ? "Отписаться от новостей" : "Подписаться на новости",
+                label: context.user.subscribe.param ? lang.template()["button"]["unsubscribe"] : lang.template()["button"]["subscribe"],
                 color: context.user.subscribe.param ? Keyboard.NEGATIVE_COLOR : Keyboard.POSITIVE_COLOR,
                 payload: {
                     command: context.user.subscribe.param ? "unsubscribe-news" : "subscribe-news"
                 }
             }),
             Keyboard.textButton({
-                label: "Сбросить данные",
+                label: lang.template()["button"]["reset_data"],
                 color: Keyboard.NEGATIVE_COLOR,
                 payload: {
                     command: "start"
@@ -76,7 +80,7 @@ export namespace keyboards {
         ])
         keyboard.push([
             Keyboard.textButton({
-                label: "Помощь в написании работ",
+                label: lang.template()["button"]["ads"],
                 color: Keyboard.SECONDARY_COLOR,
                 payload: {
                     command: "ads"
@@ -85,7 +89,7 @@ export namespace keyboards {
         ])
         keyboard.push([
             Keyboard.textButton({
-                label: "Вернутся к расписанию",
+                label: lang.template()["button"]["prev"],
                 color: Keyboard.PRIMARY_COLOR,
                 payload: {
                     command: "main"

@@ -6,9 +6,11 @@ import antispam from "../middlewares/antispam";
 import authorized from "../middlewares/authorized";
 import {randomInt} from "../utils/random";
 import SubscribeNews from "../models/SubscribeNews";
-import Peer from "../models/Peer";
 import {peer} from "../services/peer";
 import getUser = peer.getUser;
+import {keyboards} from "../config/keyboards";
+import Language from "./Language";
+import ru from "../lang/ru";
 
 export class Bot extends VK {
     readonly hearManager: HearManager<MessageContext> = new HearManager<MessageContext>()
@@ -55,17 +57,35 @@ export class Bot extends VK {
         this.updates.on('message', async (context, next) => {
             const {messagePayload, text} = context
             if (context.isOutbox) {
-                const command = context.text.toLowerCase().trim()
-                if (command[0] === "!") {
-                    const user = await getUser(context)
-                    if (user) {
-                        const oldParam = user.toJSON()["param"]
-                        const newParam = command.replace("!", "")
-                        user.update({param: newParam}).then(() => {
-                            return context.editMessage({
-                                message: `Ваша группа изменена с ${oldParam.toUpperCase()} на ${newParam.toUpperCase()}.`
+                const req = (context.text.toLowerCase().trim()).match(/!(.+)\s(.+)/i)
+                if(req){
+                    const command = req[1]
+                    const value = req[2]
+
+                    if (command === "lang") {
+                        const user = await getUser(context)
+                        if (user) {
+                            const used = user.toJSON()["lang"]
+
+                            user.update({lang: value}).then(() => {
+                                context.lang = new Language(context, value)
+                                return context.editMessage({
+                                    message: `Ваш язык изменен с ${used.toUpperCase()} на ${value.toUpperCase()}.`,
+                                    keyboard: keyboards.mainKeyboard(context)
+                                })
                             })
-                        })
+                        }
+                    } else if (command === "group") {
+                        const user = await getUser(context)
+                        if (user) {
+                            const used = user.toJSON()["param"]
+
+                            user.update({param: value}).then(() => {
+                                return context.editMessage({
+                                    message: `Ваша группа изменена с ${used.toUpperCase()} на ${value.toUpperCase()}.`
+                                })
+                            })
+                        }
                     }
                 }
                 return undefined

@@ -3,14 +3,18 @@ import {StepScene} from "@vk-io/scenes";
 import {Keyboard} from "vk-io";
 import {keyboards} from "./keyboards";
 import {peer} from "../services/peer";
+import Language from "../classes/Language";
 
 bot.sceneManager.addScenes([
     new StepScene('start-scene', [
         async (context) => {
             if (context.scene.step.firstTime || !context.text) {
                 await context.setActivity()
+
+                context.scene.state.lang = new Language(context)
+
                 await context.send({
-                    message: "Для нормальной работы бота Вам нужно ввести свою группу.\n",
+                    message: context.scene.state.lang.template()["scene"]["data_update"]["start"],
                     keyboard: Keyboard.builder().oneTime()
                 })
             }
@@ -18,13 +22,15 @@ bot.sceneManager.addScenes([
             return context.scene.step.next()
         },
         async (context) => {
+            const {lang} = context.scene.state
+
             if (context.scene.step.firstTime || !context.text) {
                 await context.setActivity()
 
                 return context.send({
-                    message: "Введите Вашу группу.",
+                    message: lang.template()["scene"]["data_update"]["enter_group"],
                     keyboard: Keyboard.builder().textButton({
-                        label: "Подробнее",
+                        label: lang.template()["button"]["detail"],
                         color: Keyboard.PRIMARY_COLOR,
                         payload: {
                             command: "detail"
@@ -36,17 +42,7 @@ bot.sceneManager.addScenes([
             if (context.messagePayload && context.messagePayload.command === "detail") {
                 await context.setActivity()
                 return context.reply({
-                    message: "Необходимо ввести свою группу в точности как указано на сайте к примеру \"407\", \"102-тэоэ\".\n\n" +
-                        "Если группа будет введена не верно, бот не сможет найти Ваше расписание, но вы можете запросто ввести свой данные заново - написав \"Начать\"\n\n" +
-                        "Как правильно:\n" +
-                        "✔ 107\n" +
-                        "✔ 10\n" +
-                        "✔ 201-3\n" +
-                        "✔ 517з\n" +
-                        "\n" +
-                        "Как НЕ правильно:\n" +
-                        "❌ \"107\"\n" +
-                        "❌ группа 201-3"
+                    message: lang.template()["scene"]["data_update"]["detail"]
                 })
             }
 
@@ -54,25 +50,32 @@ bot.sceneManager.addScenes([
             return context.scene.step.next()
         },
         async (context) => {
+            const {lang, param} = context.scene.state
+
             await context.setActivity()
 
-            await peer.setUser(context, context.scene.state.param)
+            await peer.setUser(context, param)
             await peer.setSubscribe(context, false)
 
             await context.send({
-                message: 'Поздравлем!\n' +
-                    'Теперь Вы можете полноценно пользоваться ботом.',
-                keyboard: keyboards.mainKeyboard
+                message: lang.template()["scene"]["data_update"]["success"],
+                keyboard: keyboards.mainKeyboard(context)
             })
 
             await context.send({
-                message: 'Напишите "Сегодня" или "Завтра", что бы узнать своё расписание.',
+                message: lang.template()["scene"]["data_update"]["end"],
                 keyboard: Keyboard.builder().textButton({
-                    label: "Сегодня",
-                    color: Keyboard.PRIMARY_COLOR
+                    label: lang.template()["button"]["today"],
+                    color: Keyboard.PRIMARY_COLOR,
+                    payload: {
+                        command: "today"
+                    }
                 }).textButton({
-                    label: "Завтра",
-                    color: Keyboard.POSITIVE_COLOR
+                    label: lang.template()["button"]["tomorrow"],
+                    color: Keyboard.POSITIVE_COLOR,
+                    payload: {
+                        command: "tomorrow"
+                    }
                 }).inline()
             })
 
