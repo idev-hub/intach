@@ -9,7 +9,14 @@ export default class Language {
     public readonly ua: object
 
     constructor(context, lang?: string) {
-        this.lang = lang ? lang : ((context.user) ? context.user.peer.lang : (context.session.lang ? context.session.lang : "ru")) || "ru"
+        if(lang){
+            this.lang = lang || "ru"
+        } else {
+            if(context.user && context.user.peer && context.user.peer.lang){
+                this.lang = context.user.peer.lang || "ru"
+            } else this.lang = "ru"
+        }
+
         this.ru = ru
         this.zh = zh
         this.ua = ua

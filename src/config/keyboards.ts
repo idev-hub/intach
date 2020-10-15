@@ -1,8 +1,11 @@
 import {Keyboard} from "vk-io";
+import Language from "../classes/Language";
 
 export namespace keyboards {
     export const mainKeyboard = (context) => {
-        const {lang} = context
+        let {lang} = context
+        if (!lang) lang = new Language(context, "ru")
+
         return Keyboard.keyboard([
             [
                 Keyboard.textButton({
@@ -46,7 +49,9 @@ export namespace keyboards {
         ])
     }
     export const otherKeyboard = (context) => {
-        const {lang} = context
+        let {lang} = context
+        if (!lang) lang = new Language(context, "ru")
+
         const keyboard = []
 
         keyboard.push([
