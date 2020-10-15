@@ -9,6 +9,8 @@ import {keyboards} from "./keyboards";
 import {peer} from "../services/peer";
 import {admin} from "../services/admin";
 import Peer from "../models/Peer";
+import Language from "../classes/Language";
+import getUser = peer.getUser;
 
 /**
  * Команда ПОЛУЧЕНИЯ ПОЛЬЗОВАТЕЛЕЙ
@@ -296,3 +298,35 @@ bot.command('other', ["другое", "other"], (context) => {
         keyboard: keyboards.otherKeyboard(context)
     })
 })
+
+
+/**
+ * Команда смены языка
+ * @beta
+ **/
+bot.command('language_switch', ["сменить язык"], (context) => {
+    const {lang} = context
+
+    context.setActivity()
+    return context.send({
+        message: "Выберите язык",
+        keyboard: keyboards.languageKeyboard(context)
+    })
+})
+const languages = new Language({}, "ru").languages
+for (let i = 0; i < languages.length; i++) {
+    const lang = Object.keys(languages[i])[0]
+    bot.command(`lang${lang}`, [], async (context) => {
+        const user = await getUser(context)
+        if (user) {
+            const used = user.toJSON()["lang"]
+            user.update({lang: lang}).then(() => {
+                context.lang = new Language(context, lang)
+                return context.send({
+                    message: `Вы сменили язык с ${used.toUpperCase()} на ${lang.toUpperCase()}`,
+                    keyboard: keyboards.mainKeyboard(context)
+                })
+            })
+        }
+    })
+}

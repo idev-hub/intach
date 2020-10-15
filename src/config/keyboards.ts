@@ -2,6 +2,20 @@ import {Keyboard} from "vk-io";
 import Language from "../classes/Language";
 
 export namespace keyboards {
+    export const languageKeyboard = (context) => {
+        let {lang} = context
+        if (!lang) lang = new Language(context, "ru")
+
+        return Keyboard.keyboard(lang.languages.map(lang => {
+            return Keyboard.textButton({
+                label: lang["name"],
+                color: Keyboard.PRIMARY_COLOR,
+                payload: {
+                    command: `lang${Object.keys(lang)[0]}`
+                }
+            })
+        }))
+    }
     export const mainKeyboard = (context) => {
         let {lang} = context
         if (!lang) lang = new Language(context, "ru")
@@ -89,6 +103,13 @@ export namespace keyboards {
                 color: Keyboard.SECONDARY_COLOR,
                 payload: {
                     command: "ads"
+                }
+            }),
+            Keyboard.textButton({
+                label: "Сменить язык",
+                color: Keyboard.POSITIVE_COLOR,
+                payload: {
+                    command: "language_switch"
                 }
             })
         ])
