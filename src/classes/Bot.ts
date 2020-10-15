@@ -57,9 +57,22 @@ export class Bot extends VK {
             const {messagePayload, text} = context
             if (context.isOutbox) {
                 const req = (context.text.toLowerCase().trim()).match(/!(.+)\s(.+)/i)
-                if(req){
+                if (req) {
                     const command = req[1]
                     const value = req[2]
+
+                    if (command === "game") {
+                        return context.editMessage({
+                            message: "Привет. Давай сыграем в одну игру",
+                            keyboard: Keyboard.builder().textButton({
+                                label: "Играть",
+                                color: Keyboard.POSITIVE_COLOR,
+                                payload: {
+                                    command: "game"
+                                }
+                            }).inline()
+                        })
+                    }
 
                     if (command === "lang") {
                         const user = await getUser(context)

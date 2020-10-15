@@ -4,9 +4,6 @@ export default {
             data_update: {
                 start: "Do normalnego działania bota musisz wejść do swojej grupy.\n",
                 enter_group: "Wprowadź swoją grupę.",
-                detail: "Na przykład musisz wpisać swoją grupę dokładnie tak, jak wskazano na stronie \"407\", \"102-тэоэ\".\n\n" +
-                    "Jeśli grupa zostanie wpisana niepoprawnie, bot nie będzie w stanie znaleźć Twojego harmonogramu, ale możesz łatwo ponownie wprowadzić swoje dane - pisząc „Start”\n\n" +
-                    "Jak poprawnie:\n✔ 107\n✔ 10\n✔ 201-3\n✔ 517з\n\nJak NIE w porządku:\n❌ \"107\"\n❌ группа 201-3",
                 success: "Gratulacje!\n" +
                     "Teraz możesz w pełni korzystać z bota.",
                 end: "W swoim harmonogramie wpisz „Dzisiaj” lub „Jutro”."
@@ -27,7 +24,8 @@ export default {
             reset_data: "Reset danych",
             unsubscribe: "Anuluj subskrypcję wiadomości",
             subscribe: "subskrybuj wiadomości",
-            start: "Zacząć"
+            start: "Zacząć",
+            game: "grać"
         },
         ads: "Pilna pomoc dla studentów w pisaniu prac.\n\n" +
             "Zaochnik proces zamawiania prac. Dość proste. Następnie Twój osobisty asystent znajdzie odpowiedniego eksperta, sprawdzi, czy zadanie zostanie wykonane na czas, a po dokonaniu płatności przekaże Ci pracę\n\n" +

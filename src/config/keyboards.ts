@@ -120,6 +120,13 @@ export namespace keyboards {
                 payload: {
                     command: "main"
                 }
+            }),
+            Keyboard.textButton({
+                label: lang.template()["button"]["game"],
+                color: Keyboard.POSITIVE_COLOR,
+                payload: {
+                    command: "game"
+                }
             })
         ])
 

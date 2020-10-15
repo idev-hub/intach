@@ -301,6 +301,13 @@ bot.command('other', ["другое", "other"], (context) => {
 
 
 /**
+ * Команда камень ножницы бумага
+ * @beta
+ **/
+bot.command('game', ["game", "играть"], (context) => context.scene.enter("rock-paper-scissors"))
+
+
+/**
  * Команда смены языка
  * @beta
  **/
