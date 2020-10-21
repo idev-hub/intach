@@ -1,17 +1,15 @@
-import bot from "./bot";
+import {Bot} from "../classes/Bot";
 
-export namespace admin {
-    export const getAdmins = async () => {
-        const admins = await bot.api.groups.getMembers({
-            group_id: process.env.GROUP_ID,
-            // @ts-ignore
-            filter: "managers"
-        })
-        return admins.items
-    }
+export const getAdmins = async (app: Bot) => {
+    const admins = await app.api.groups.getMembers({
+        group_id: process.env.GROUP_ID,
+        // @ts-ignore
+        filter: "managers"
+    })
+    return admins.items
+}
 
-    export const isAdmin = async (context) => {
-        const admins = await getAdmins()
-        return !!admins.find(f => f["id"] === context.peerId);
-    }
+export const isAdmin = async (app, context) => {
+    const admins = await getAdmins(app)
+    return !!admins.find(f => f["id"] === context.peerId);
 }

@@ -1,4 +1,4 @@
-import {DateTime} from 'luxon';
+import { DateTime } from 'luxon';
 
 export default class Luxon {
 
@@ -29,7 +29,7 @@ export default class Luxon {
      * @returns {Luxon} Luxon
      **/
     public add(_hours: number): Luxon {
-        this.local = this.local.plus({hours: _hours})
+        this.local = this.local.plus({ hours: _hours })
         return this
     }
 
@@ -39,7 +39,7 @@ export default class Luxon {
      * @returns {Luxon} Luxon
      **/
     public subtract(_hours: number): Luxon {
-        this.local = this.local.minus({hours: _hours})
+        this.local = this.local.minus({ hours: _hours })
         return this
     }
 

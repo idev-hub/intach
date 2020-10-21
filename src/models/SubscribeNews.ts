@@ -1,4 +1,4 @@
-import {DataTypes} from "sequelize";
+import { DataTypes } from "sequelize";
 import database from "../services/database";
 
 const SubscribeNews = database.define("subscribe_news", {

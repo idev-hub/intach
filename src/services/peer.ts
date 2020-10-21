@@ -24,7 +24,7 @@ export namespace peer {
     export const setSubscribe = async (context, param: boolean) => {
         const subscribe = await getSubscribe(context)
         if (subscribe) {
-            await subscribe.update({param: param})
+            await subscribe.update({ param: param })
         } else {
             await SubscribeNews.create({
                 peerId: context.peerId,
@@ -53,7 +53,7 @@ export namespace peer {
             }
         })
 
-        if(user){
+        if (user) {
             const subscribe = await SubscribeNews.findOne({
                 where: {
                     peerId: context.peerId

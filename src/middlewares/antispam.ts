@@ -1,9 +1,9 @@
-import {Keyboard} from "vk-io";
+import { Keyboard } from "vk-io";
 
 // Проверка на спам сообщениями
 export default async (context, next) => {
-    const {session, createdAt, text, lang} = context
-    const {pastMessage} = session
+    const { session, createdAt, text, lang } = context
+    const { pastMessage } = session
     const sec = 10
 
     if (session.pastMessage) {

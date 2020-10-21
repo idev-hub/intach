@@ -8,15 +8,8 @@ export default class Language {
     public lang: string
     public readonly languages: Array<Object> = []
 
-    constructor(context, lang?: string) {
-        if (lang) {
-            this.lang = lang || "ru"
-        } else {
-            if (context.user && context.user.peer && context.user.peer.lang) {
-                this.lang = context.user.peer.lang || "ru"
-            } else this.lang = "ru"
-        }
-
+    constructor(lang: string = "ru") {
+        this.lang = lang
         this.languages = [ru, zh, ua, pl, emoji]
     }
 

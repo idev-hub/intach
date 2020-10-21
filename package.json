@@ -18,12 +18,14 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
+    "@vk-io/authorization": "^1.0.0",
     "@vk-io/hear": "^1.0.2",
     "@vk-io/scenes": "^1.0.0",
     "@vk-io/session": "^2.0.0",
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
     "luxon": "^1.25.0",
+    "middleware-io": "^2.5.0",
     "mysql2": "^2.2.5",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.4",

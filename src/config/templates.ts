@@ -9,9 +9,9 @@ export namespace templates {
 
         for (let i = 0; i < data.count; i++) {
             const item = data.items[i]
-            template += `- ${lang.template()["timetable"]["num"]}${item.num}`
-            if (item.cabinet) template += ` - ${item.cabinet} ${lang.template()["timetable"]["cabinet"]}`
-            template += `\n- ${lang.template()["timetable"]["discipline"]}${item.discipline}\n- ${lang.template()["timetable"]["teacher"]}${item.teacher}\n\n`
+            template += `- ${lang["timetable"]["num"]}${item.num}`
+            if (item.cabinet) template += ` - ${item.cabinet} ${lang["timetable"]["cabinet"]}`
+            template += `\n- ${lang["timetable"]["discipline"]}${item.discipline}\n- ${lang["timetable"]["teacher"]}${item.teacher}\n\n`
         }
 
         return template
@@ -25,7 +25,7 @@ export namespace templates {
         if (data["count"] > 0)
             template += disciplineTemplate(context, data)
         else
-            template += lang.template()["not_found"]
+            template += lang["not_found"]
 
         return template
     }

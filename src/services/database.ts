@@ -1,4 +1,4 @@
-import {Sequelize} from "sequelize";
+import { Sequelize } from "sequelize";
 
 let database: Sequelize = new Sequelize({
     host: process.env.DBHOST,

@@ -118,3 +118,4 @@ out
 .idea
 compressor.js
 /.idea/
+/dist/

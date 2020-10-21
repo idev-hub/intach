@@ -1,135 +1,124 @@
-import {Keyboard} from "vk-io";
+import {Keyboard, KeyboardBuilder} from "vk-io";
 import Language from "../classes/Language";
+import genKeyboard from "../utils/genKeyboard";
 
 export namespace keyboards {
     export const languageKeyboard = (context) => {
-        let {lang} = context
-        if (!lang) lang = new Language(context, "ru")
-
-        return Keyboard.keyboard(lang.languages.map(lang => {
+        let lang = new Language()
+        return genKeyboard(2, lang.languages.map(lang => {
             return Keyboard.textButton({
                 label: lang["name"],
-                color: Keyboard.PRIMARY_COLOR,
                 payload: {
                     command: `lang${Object.keys(lang)[0]}`
                 }
             })
-        }))
+        }), true).textButton({
+            label: "Отмена",
+            payload: {
+                command: "main"
+            },
+            color: Keyboard.NEGATIVE_COLOR
+        })
     }
-    export const mainKeyboard = (context) => {
+    export const mainKeyboard = (context): KeyboardBuilder => {
         let {lang} = context
-        if (!lang) lang = new Language(context, "ru")
 
-        return Keyboard.keyboard([
-            [
-                Keyboard.textButton({
-                    label: lang.template()["button"]["after_tomorrow"],
-                    color: Keyboard.NEGATIVE_COLOR,
-                    payload: {
-                        command: "after_tomorrow"
-                    }
-                }),
-                Keyboard.textButton({
-                    label: lang.template()["button"]["today"],
-                    color: Keyboard.PRIMARY_COLOR,
-                    payload: {
-                        command: "today"
-                    }
-                }),
-                Keyboard.textButton({
-                    label: lang.template()["button"]["tomorrow"],
-                    color: Keyboard.POSITIVE_COLOR,
-                    payload: {
-                        command: "tomorrow"
-                    }
-                })
-            ],
-            [
-                Keyboard.textButton({
-                    label: lang.template()["button"]["week"],
-                    color: Keyboard.NEGATIVE_COLOR,
-                    payload: {
-                        command: "week"
-                    }
-                }),
-                Keyboard.textButton({
-                    label: lang.template()["button"]["other"],
-                    color: Keyboard.POSITIVE_COLOR,
-                    payload: {
-                        command: "other"
-                    }
-                })
-            ]
-        ])
-    }
-    export const otherKeyboard = (context) => {
-        let {lang} = context
-        if (!lang) lang = new Language(context, "ru")
-
-        const keyboard = []
-
-        keyboard.push([
+        const keyboards = [
             Keyboard.textButton({
-                label: lang.template()["button"]["call_admins"],
+                label: lang["button"]["after_tomorrow"],
+                color: Keyboard.NEGATIVE_COLOR,
+                payload: {
+                    command: "after_tomorrow"
+                }
+            }),
+            !context.isChat ? Keyboard.textButton({
+                label: lang["button"]["today"],
+                color: Keyboard.PRIMARY_COLOR,
+                payload: {
+                    command: "today"
+                }
+            }) : undefined,
+            Keyboard.textButton({
+                label: lang["button"]["tomorrow"],
                 color: Keyboard.POSITIVE_COLOR,
+                payload: {
+                    command: "tomorrow"
+                }
+            }),
+            !context.isChat ? Keyboard.textButton({
+                label: lang["button"]["week"],
+                color: Keyboard.NEGATIVE_COLOR,
+                payload: {
+                    command: "week"
+                }
+            }) : undefined,
+            Keyboard.textButton({   
+                label: lang["button"]["other"],
+                color: Keyboard.POSITIVE_COLOR,
+                payload: {
+                    command: "other"
+                }
+            })
+        ]
+
+        return genKeyboard(3, keyboards)
+    }
+    export const otherKeyboard = (context): KeyboardBuilder => {
+        let {lang} = context
+
+        const keyboards = [
+            !context.isChat ? Keyboard.textButton({
+                label: lang["button"]["call_admins"],
                 payload: {
                     command: "call_admins"
                 }
-            }),
+            }) : undefined,
             Keyboard.urlButton({
-                label: lang.template()["button"]["reference"],
+                label: lang["button"]["reference"],
                 url: "https://vk.com/@in_teach-spravka-po-botu"
-            })
-        ])
-        keyboard.push([
-            Keyboard.textButton({
-                label: context.user.subscribe.param ? lang.template()["button"]["unsubscribe"] : lang.template()["button"]["subscribe"],
+            }),
+            !context.isChat ? Keyboard.textButton({
+                label: context.user.subscribe.param ? lang["button"]["unsubscribe"] : lang["button"]["subscribe"],
                 color: context.user.subscribe.param ? Keyboard.NEGATIVE_COLOR : Keyboard.POSITIVE_COLOR,
                 payload: {
                     command: context.user.subscribe.param ? "unsubscribe-news" : "subscribe-news"
                 }
-            }),
+            }) : undefined,
             Keyboard.textButton({
-                label: lang.template()["button"]["reset_data"],
+                label: lang["button"]["reset_data"],
                 color: Keyboard.NEGATIVE_COLOR,
                 payload: {
                     command: "start"
                 }
-            })
-        ])
-        keyboard.push([
+            }),
             Keyboard.textButton({
-                label: lang.template()["button"]["ads"],
-                color: Keyboard.SECONDARY_COLOR,
+                label: lang["button"]["ads"],
                 payload: {
                     command: "ads"
                 }
             }),
             Keyboard.textButton({
                 label: "Сменить язык",
-                color: Keyboard.POSITIVE_COLOR,
                 payload: {
                     command: "language_switch"
                 }
-            })
-        ])
-        keyboard.push([
-            Keyboard.textButton({
-                label: lang.template()["button"]["prev"],
-                color: Keyboard.PRIMARY_COLOR,
-                payload: {
-                    command: "main"
-                }
             }),
             Keyboard.textButton({
-                label: lang.template()["button"]["game"],
+                label: lang["button"]["game"],
                 color: Keyboard.POSITIVE_COLOR,
                 payload: {
                     command: "game"
                 }
-            })
-        ])
+            }),
+            Keyboard.textButton({
+                label: lang["button"]["prev"],
+                color: Keyboard.NEGATIVE_COLOR,
+                payload: {
+                    command: "main"
+                }
+            }),
+        ]
 
-        return Keyboard.keyboard(keyboard)
+        return genKeyboard(2, keyboards, true)
     }
 }
