@@ -31,7 +31,7 @@ class Application {
             })
         } else {
 
-            this.router.get('/webhook', (req, res) => this.bot.updates.getWebhookCallback())
+            this.router.get('/webhook', this.bot.updates.getWebhookCallback)
             console.info("The bot has been successfully launched on the reverse export and is listening on the url:", "/webhook")
 
             this.startExpress()
