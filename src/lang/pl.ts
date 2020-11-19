@@ -63,13 +63,16 @@ export default {
             template += "⛔ Czy popełniłeś błąd podczas wprowadzania danych? Chcesz zmienić grupę\n\n" +
                 "Kliknij „Resetuj dane”.\n\n"
 
-            if (context.user.subscribe.param) {
-                template += "🚀 Nie chcesz już być świadomy wszystkich nowości dotyczących botów?\n" +
-                    "Kliknij przycisk „Anuluj subskrypcję wiadomości”\n\n"
-            } else {
-                template += "🚀 Czy chcesz być świadomy wszystkich nowości dotyczących botów?\n" +
-                    "Kliknij przycisk „Subskrybuj wiadomości” i jako pierwszy dowiesz się o nowościach grupy i aktualizacjach botów.\n\n"
+            if(!context.isChat){
+                if (context.user.subscribe.param) {
+                    template += "🚀 Nie chcesz już być świadomy wszystkich nowości dotyczących botów?\n" +
+                        "Kliknij przycisk „Anuluj subskrypcję wiadomości”\n\n"
+                } else {
+                    template += "🚀 Czy chcesz być świadomy wszystkich nowości dotyczących botów?\n" +
+                        "Kliknij przycisk „Subskrybuj wiadomości” i jako pierwszy dowiesz się o nowościach grupy i aktualizacjach botów.\n\n"
+                }
             }
+
             return template
         },
         not_found: "Nie znaleziono",

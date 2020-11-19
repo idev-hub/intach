@@ -12,9 +12,12 @@ import Language from "../classes/Language";
 import getUser = peer.getUser;
 import {Bot} from "../classes/Bot";
 import {getAdmins} from "../services/admin";
+import isInbox from "../middlewares/hearer/isInbox";
+import isOutbox from "../middlewares/hearer/isOutbox";
+import Peer from "../models/Peer";
 
 export default ((app: Bot) => {
-    app.hear("test", ["?", "test"], [
+    app.hear("test", ["/test"], [
         async (context, next) => {
             await context.send("message one")
             return next()
@@ -343,4 +346,29 @@ export default ((app: Bot) => {
             }
         ])
     }
+
+    /**
+     * Команда смены группы
+     * @beta
+     **/
+    app.hear("rename", [new RegExp(/^(!group+\s)(.*)/i)], [
+        isOutbox,
+        async (context) => {
+            if (context.$match[2])
+                await app.api.messages.delete({
+                    peer_id: context.peerId,
+                    delete_for_all: true,
+                    message_ids: context.id
+                })
+
+            let user = await peer.getUser(context)
+            await peer.setUser(context, context.$match[2])
+
+            context.lang = new Language("ru").template()
+            return context.send({
+                message: (user)?`Вам изменили группу с ${user.get("param")} на ${context.$match[2]}`:`Вам присвоили группу ${context.$match[2]}`,
+                keyboard: keyboards.mainKeyboard(context)
+            })
+        }
+    ])
 })

@@ -62,13 +62,16 @@ export default {
             template += "⛔ 輸入數據時您是否犯了錯誤？ 想換組\n" +
                 "點擊“重置數據”。\n\n"
 
-            if (context.user.subscribe.param) {
-                template += "🚀 不想再了解所有機器人新聞了嗎？\n" +
-                    "點擊“退訂新聞”按鈕\n\n"
-            } else {
-                template += "🚀 您想知道所有機器人新聞嗎？\n" +
-                    "單擊“訂閱新聞”按鈕，第一個了解該組的新聞和機器人更新。\n\n"
+            if(!context.isChat){
+                if (context.user.subscribe.param) {
+                    template += "🚀 不想再了解所有機器人新聞了嗎？\n" +
+                        "點擊“退訂新聞”按鈕\n\n"
+                } else {
+                    template += "🚀 您想知道所有機器人新聞嗎？\n" +
+                        "單擊“訂閱新聞”按鈕，第一個了解該組的新聞和機器人更新。\n\n"
+                }
             }
+
             return template
         },
         not_found: "未找到",

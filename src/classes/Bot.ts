@@ -30,7 +30,7 @@ export class Bot extends VK {
 
     constructor(param) {
         super(param)
-        this.updates.on('wall_post_new', async (context, next) => await wall_post_new(this, context, next))
+        this.updates.on('wall_post_new', wall_post_new)
         this.updates.on('message_new', (context, next) => {
             context.lang = this.langManager.template()
             return next()
@@ -38,22 +38,6 @@ export class Bot extends VK {
         this.updates.on('message_new', this.sessionManager.middleware)
         this.updates.on('message_new', this.sceneManager.middleware)
         this.updates.on('message_new', this.sceneManager.middlewareIntercept)
-        this.updates.on('message_event', async (context, next) => {
-            if (context.eventPayload && context.eventPayload.command) {
-                const {command} = context.eventPayload
-                if (command === "other") {
-                    await this.api.messages.sendMessageEventAnswer({
-                        event_id: context.eventId,
-                        user_id: context.userId,
-                        peer_id: context.peerId,
-                        event_data: JSON.stringify({
-                            type: "show_snackbar",
-                            text: "Покажи исчезающее сообщение на экране"
-                        })
-                    })
-                }
-            }
-        });
         this.updates.on('message_new', async (context, next) => {
             await chat(this, context, next)
         })
@@ -62,14 +46,9 @@ export class Bot extends VK {
 
             if (senderType === "user") {
 
-                // state.command = messagePayload && messagePayload.command
-                //     ? messagePayload.command
-                //     : null
-                //
-                // if (messagePayload.command && messagePayload.command === "not_supported_button") {
-                //     console.log(messagePayload)
-                //     messagePayload.command = JSON.parse(messagePayload.payload).command
-                // }
+                state.command = messagePayload && messagePayload.command
+                    ? messagePayload.command
+                    : null
 
                 this.hearManager.middleware(context, next)
             }
