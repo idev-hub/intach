@@ -31,14 +31,16 @@ class Application {
             })
         } else {
 
-            this.router.get('/webhook', this.bot.updates.getWebhookCallback)
-            console.info("The bot has been successfully launched on the reverse export and is listening on the url:", "/webhook")
+            await this.bot.updates.startWebhook({port: this.port})
 
-            this.startExpress()
-
-            this.express.listen(this.port, () => {
-                console.info("The server has started successfully and is listening on the port:", this.port)
-            })
+            // this.router.get('/webhook', this.bot.updates.getWebhookCallback)
+            // console.info("The bot has been successfully launched on the reverse export and is listening on the url:", "/webhook")
+            //
+            // this.startExpress()
+            //
+            // this.express.listen(this.port, () => {
+            //     console.info("The server has started successfully and is listening on the port:", this.port)
+            // })
         }
     }
 }
