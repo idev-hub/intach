@@ -12,9 +12,7 @@ import Language from "../classes/Language";
 import getUser = peer.getUser;
 import {Bot} from "../classes/Bot";
 import {getAdmins} from "../services/admin";
-import isInbox from "../middlewares/hearer/isInbox";
 import isOutbox from "../middlewares/hearer/isOutbox";
-import Peer from "../models/Peer";
 
 export default ((app: Bot) => {
     app.hear("test", ["/test"], [
@@ -89,7 +87,7 @@ export default ((app: Bot) => {
      * Обновление или добавление личных данных пользователя
      * @beta
      **/
-    app.hear("start", ["начать", "start"], [
+    app.hear("start", [new RegExp(/(\s+)?(начать|start)/i)], [
         (context) => context.scene.enter("start-scene")
     ])
 
@@ -97,7 +95,7 @@ export default ((app: Bot) => {
      * Команда получения расписания за СЕГОДНЯ.
      * @beta
      **/
-    app.hear("today", ["сегодня", "today"], [
+    app.hear("today", [new RegExp(/(\s+)?(сегодня)/i)], [
         isLogin,
         async (context) => {
             const {lang} = context
@@ -130,7 +128,7 @@ export default ((app: Bot) => {
      * Команда получения расписания на ЗАВТРА.
      * @beta
      **/
-    app.hear("tomorrow", ["завтра", "tomorrow"], [
+    app.hear("tomorrow", [new RegExp(/(\s+)?(завтра)/i)], [
         isLogin,
         async (context) => {
             const {lang} = context
@@ -161,7 +159,7 @@ export default ((app: Bot) => {
      * Команда получения расписания на Послезавтра.
      * @beta
      **/
-    app.hear("after_tomorrow", ["послезавтра"], [
+    app.hear("after_tomorrow", [new RegExp(/(\s+)?(послезавтра)/i)], [
         isLogin,
         async (context) => {
             const {lang} = context
@@ -192,7 +190,7 @@ export default ((app: Bot) => {
      * Команда получения расписания на НЕДЕЛЮ.
      * @beta
      **/
-    app.hear("week", ["На неделю"], [
+    app.hear("week", [new RegExp(/(\s+)?(на неделю)/i)], [
         isLogin,
         async (context) => {
             const {lang} = context
@@ -291,7 +289,7 @@ export default ((app: Bot) => {
      * Команда прочих команд
      * @beta
      **/
-    app.hear("other", ["другое", "other"], [
+    app.hear("other", [new RegExp(/(\s+)?(прочее|другое)/i)], [
         isLogin,
         (context) => {
             const {lang} = context
@@ -308,7 +306,7 @@ export default ((app: Bot) => {
      * Команда камень ножницы бумага
      * @beta
      **/
-    app.hear("game", ["game", "играть"], [
+    app.hear("game", [new RegExp(/(\s+)?(играть)/i)], [
         (context) => context.scene.enter("rock-paper-scissors")
     ])
 

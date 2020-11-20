@@ -1,15 +1,19 @@
-import { Keyboard } from "vk-io";
+import {Keyboard} from "vk-io";
 
 export default async (then, context, next) => {
     if (context.isChat) {
         try {
-            context.conversations = await then.api.messages.getConversationMembers({ peer_id: context.peerId })
-            const reg = new RegExp(/(?<appeal>(^\[.*]|@.*\w|^(бот)|^(bot)(\.|,|\s)?))(?<value>.*)/i)
-            const text = context.text.match(reg)
+            context.conversations = await then.api.messages.getConversationMembers({peer_id: context.peerId})
+            const reg = new RegExp(/(?<appeal>(^\[.*]|@.*\w|^((^б+)(о+?)т+)|^(bot)(\.|,|\s)?))(\s+|,+|\.+)?(?<value>(\s*).*)/i)
+            const text = context.text
+
             if (text) {
-                if (text.groups["appeal"]) {
-                    context.text = text.groups["value"]
-                    return next()
+                const match = text.match(reg)
+                if (match) {
+                    if (match.groups["appeal"]) {
+                        context.text = match.groups["value"]
+                        return next()
+                    }
                 }
             }
         } catch (e) {
@@ -23,6 +27,6 @@ export default async (then, context, next) => {
             })
         }
     } else {
-        await next()
+        return next()
     }
 }
