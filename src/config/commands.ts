@@ -361,6 +361,9 @@ export default ((app: Bot) => {
 
             let user = await peer.getUser(context)
             await peer.setUser(context, context.$match[2])
+            if(!user){
+                await peer.setSubscribe(context, true)
+            }
 
             context.lang = new Language("ru").template()
             return context.send({
