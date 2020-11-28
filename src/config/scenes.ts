@@ -40,6 +40,7 @@ export default (then) => {
             async (context) => {
                 const {param} = context.scene.state
                 const {lang} = context
+
                 await context.setActivity()
 
                 await peer.setUser(context, param)

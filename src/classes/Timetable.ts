@@ -1,9 +1,9 @@
 import Luxon from "./Luxon";
 import axios from "axios"
 
-export const getTable = async (context, date: Luxon) => {
+export const getTable = async (param: string, date: Luxon) => {
     try {
-        const response = await axios.post(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${context.user.peer.param}`))
+        const response = await axios.post(encodeURI(`https://api.chgpgt.ru/api/getRaspisanGroups/${date.pin()}/${param}`))
         return {
             count: response.data.length,
             dayweek: {

@@ -1,6 +1,7 @@
 import {Bot} from "./Bot";
 import express, {Router} from "express"
 import api from "../api";
+import bodyParser from "body-parser";
 
 class Application {
     public readonly express: express = express()
@@ -16,6 +17,8 @@ class Application {
     })
 
     private readonly startExpress = () => {
+        this.express.use(bodyParser.urlencoded({ extended: false }))
+        this.express.use(bodyParser.json())
         this.express.use("/api", api)
     }
 

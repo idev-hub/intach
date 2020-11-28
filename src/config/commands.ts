@@ -99,7 +99,7 @@ export default ((app: Bot) => {
         isLogin,
         async (context) => {
             const {lang} = context
-            const date = new Luxon()
+            const date = new Luxon('Asia/Yekaterinburg')
 
             await context.setActivity()
             return context.send({
@@ -132,7 +132,7 @@ export default ((app: Bot) => {
         isLogin,
         async (context) => {
             const {lang} = context
-            const date = new Luxon().add(24)
+            const date = new Luxon('Asia/Yekaterinburg').add(24)
             const keyboards = [
                 !context.isChat ? Keyboard.textButton({
                     label: lang["button"]["today"],
@@ -163,7 +163,7 @@ export default ((app: Bot) => {
         isLogin,
         async (context) => {
             const {lang} = context
-            const date = new Luxon().add(48)
+            const date = new Luxon('Asia/Yekaterinburg').add(48)
             const keyboards = [
                 !context.isChat ? Keyboard.textButton({
                     label: lang["button"]["today"],
@@ -203,7 +203,7 @@ export default ((app: Bot) => {
                 const date = new Luxon().add(time)
 
                 if (date.week() !== 7) {
-                    const data = await getTable(context, date)
+                    const data = await getTable(context.user.peer.param, date)
                     if (data["count"] > 0) {
 
                         let template = `📅 ${date.pin()}, ${context.user.peer.param.toUpperCase()}\n\n`

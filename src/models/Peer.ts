@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import database from "../services/database";
+import College from "./College";
 
 const Peer = database.define("peer", {
     peerId: {
@@ -8,14 +9,13 @@ const Peer = database.define("peer", {
         primaryKey: true
     },
     param: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
     },
     lang: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "ru"
-    }
+    },
 })
 
 export default Peer

@@ -7,16 +7,18 @@ export namespace peer {
         return await Peer.findAll()
     }
 
-    export const setUser = async (context, param: string) => {
+    export const setUser = async (context, param: string, college: number = 1) => {
         const user = await getUser(context)
         if (user) {
             await user.update({
                 peerId: context.peerId,
+                college: college,
                 param: param
             })
         } else {
             await Peer.create({
                 peerId: context.peerId,
+                college: college,
                 param: param
             })
         }

@@ -19,7 +19,7 @@ export namespace templates {
 
     export const tableTemplate = async (context, date: Luxon) => {
         const {lang} = context
-        const data = await getTable(context, date)
+        const data = await getTable(context.user.peer.param, date)
         let template: string = `📅 ${context.user.peer.param.toUpperCase()}, ${date.pin()}\n\n`
 
         if (data["count"] > 0)
