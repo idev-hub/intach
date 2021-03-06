@@ -6,6 +6,7 @@ export default function (columns: number, keyboards: Array<IKeyboardProxyButton 
         if (keyboard !== null && keyboard !== undefined) return keyboard
     })
 
+
     for (let i = 0; i < Math.ceil(keys.length / columns); i++) {
         array[i] = keys.slice((i * columns), (i * columns) + columns)
     }
