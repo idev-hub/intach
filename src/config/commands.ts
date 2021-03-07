@@ -24,7 +24,7 @@ export default ((app: Bot) => {
 
                 const client = await getClient(user)
                 if ( client ) {
-                    await setClient({ peer_id: user.toString(), param: encodeURI(param) })
+                    await setClient({ peer_id: user.toString(), param: param })
                     return context.editMessage({
                         message: `Вам изменили группу с ${ client.param } на ${ param }.`
                     })
