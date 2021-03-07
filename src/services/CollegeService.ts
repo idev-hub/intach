@@ -48,9 +48,9 @@ export const templateTimetable = (data: any) => {
 
     if ( data.length > 0 ) {
         data.forEach(item => {
-            message += `- Пара №${ item.number } - ${ item.cabinet }кб.\n`
-            message += `- Дисциплина: ${ item.discipline }\n`
-            message += `- Преподаватель: ${ item.teacher }\n`
+            message += `- Пара №${ item.number ? item.number : 'NaN' } ${ item.cabinet ? `- ${ item.cabinet }кб.` : `` }\n`
+            message += `- Дисциплина: ${ item.discipline ? item.discipline : 'Неизвестно' }\n`
+            message += `- Преподаватель: ${ item.teacher ? item.teacher : 'Неизвестно' }\n`
             message += `\n`
         })
     }
