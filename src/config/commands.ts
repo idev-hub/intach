@@ -21,23 +21,29 @@ export default ((app: Bot) => {
      **/
     app.hear("yesterday", [ new RegExp(/^(вчера|в|d|yesterday)/i) ], [
         async (context: MessageContext) => {
-            const date = DateTime.now().minus({ days: 1 })
-            return context.send({
-                message: await timetable(context.client.college_id, context.client.param, date),
-                keyboard: Keyboard.keyboard([ [
-                    Keyboard.textButton({
-                        color: ButtonColor.PRIMARY,
-                        label: 'Сегодня',
-                        payload: { command: 'today' }
-                    }),
-                    Keyboard.textButton({
-                        color: ButtonColor.POSITIVE,
-                        label: 'Завтра',
-                        payload: { command: 'tomorrow' }
-                    })
-                ] ]).inline(),
-                attachment: getImageWeekDay(date)
-            })
+            try {
+                const date = DateTime.now().minus({ days: 1 }),
+                    { college_id, param } = context.session.client
+
+                return context.send({
+                    message: await timetable(parseInt(college_id), param.toString(), date),
+                    keyboard: Keyboard.keyboard([ [
+                        Keyboard.textButton({
+                            color: ButtonColor.PRIMARY,
+                            label: 'Сегодня',
+                            payload: { command: 'today' }
+                        }),
+                        Keyboard.textButton({
+                            color: ButtonColor.POSITIVE,
+                            label: 'Завтра',
+                            payload: { command: 'tomorrow' }
+                        })
+                    ] ]).inline(),
+                    attachment: getImageWeekDay(date)
+                })
+            } catch ( e ) {
+                return context.send("Упс... Что-то пошло не так. Ошибка: " + e.toString())
+            }
         }
     ])
 
@@ -48,23 +54,28 @@ export default ((app: Bot) => {
      **/
     app.hear("today", [ new RegExp(/^(сегодня|с|c|today)/i) ], [
         async (context: MessageContext) => {
-            const date = DateTime.now()
-            return context.send({
-                message: await timetable(context.client.college_id, context.client.param, date),
-                keyboard: Keyboard.keyboard([ [
-                    Keyboard.textButton({
-                        color: ButtonColor.NEGATIVE,
-                        label: 'Вчера',
-                        payload: { command: 'yesterday' }
-                    }),
-                    Keyboard.textButton({
-                        color: ButtonColor.POSITIVE,
-                        label: 'Завтра',
-                        payload: { command: 'tomorrow' }
-                    })
-                ] ]).inline(),
-                attachment: getImageWeekDay(date)
-            })
+            try {
+                const date = DateTime.now(),
+                    { college_id, param } = context.session.client
+                return context.send({
+                    message: await timetable(parseInt(college_id), param.toString(), date),
+                    keyboard: Keyboard.keyboard([ [
+                        Keyboard.textButton({
+                            color: ButtonColor.NEGATIVE,
+                            label: 'Вчера',
+                            payload: { command: 'yesterday' }
+                        }),
+                        Keyboard.textButton({
+                            color: ButtonColor.POSITIVE,
+                            label: 'Завтра',
+                            payload: { command: 'tomorrow' }
+                        })
+                    ] ]).inline(),
+                    attachment: getImageWeekDay(date)
+                })
+            } catch ( e ) {
+                return context.send("Упс... Что-то пошло не так. Ошибка: " + e.toString())
+            }
         }
     ])
 
@@ -75,23 +86,28 @@ export default ((app: Bot) => {
      **/
     app.hear("tomorrow", [ new RegExp(/^(завтра|з|p|tomorrow)/i) ], [
         async (context: MessageContext) => {
-            const date = DateTime.now().plus({ days: 1 })
-            return context.send({
-                message: await timetable(context.client.college_id, context.client.param, date),
-                keyboard: Keyboard.keyboard([ [
-                    Keyboard.textButton({
-                        color: ButtonColor.PRIMARY,
-                        label: 'Сегодня',
-                        payload: { command: 'today' }
-                    }),
-                    Keyboard.textButton({
-                        color: ButtonColor.POSITIVE,
-                        label: 'Послезавтра',
-                        payload: { command: 'after_tomorrow' }
-                    })
-                ] ]).inline(),
-                attachment: getImageWeekDay(date)
-            })
+            try {
+                const date = DateTime.now().plus({ days: 1 }),
+                    { college_id, param } = context.session.client
+                return context.send({
+                    message: await timetable(parseInt(college_id), param.toString(), date),
+                    keyboard: Keyboard.keyboard([ [
+                        Keyboard.textButton({
+                            color: ButtonColor.PRIMARY,
+                            label: 'Сегодня',
+                            payload: { command: 'today' }
+                        }),
+                        Keyboard.textButton({
+                            color: ButtonColor.POSITIVE,
+                            label: 'Послезавтра',
+                            payload: { command: 'after_tomorrow' }
+                        })
+                    ] ]).inline(),
+                    attachment: getImageWeekDay(date)
+                })
+            } catch ( e ) {
+                return context.send("Упс... Что-то пошло не так. Ошибка: " + e.toString())
+            }
         }
     ])
 
@@ -102,23 +118,29 @@ export default ((app: Bot) => {
      **/
     app.hear("after_tomorrow", [ new RegExp(/^(послезавтра|пз|gp|after_tomorrow)/i) ], [
         async (context: MessageContext) => {
-            const date = DateTime.now().plus({ days: 2 })
-            return context.send({
-                message: await timetable(context.client.college_id, context.client.param, date),
-                keyboard: Keyboard.keyboard([ [
-                    Keyboard.textButton({
-                        color: ButtonColor.PRIMARY,
-                        label: 'Сегодня',
-                        payload: { command: 'today' }
-                    }),
-                    Keyboard.textButton({
-                        color: ButtonColor.POSITIVE,
-                        label: 'Завтра',
-                        payload: { command: 'tomorrow' }
-                    })
-                ] ]).inline(),
-                attachment: getImageWeekDay(date)
-            })
+            try {
+                const date = DateTime.now().plus({ days: 2 }),
+                    { college_id, param } = context.session.client
+
+                return context.send({
+                    message: await timetable(parseInt(college_id), param.toString(), date),
+                    keyboard: Keyboard.keyboard([ [
+                        Keyboard.textButton({
+                            color: ButtonColor.PRIMARY,
+                            label: 'Сегодня',
+                            payload: { command: 'today' }
+                        }),
+                        Keyboard.textButton({
+                            color: ButtonColor.POSITIVE,
+                            label: 'Завтра',
+                            payload: { command: 'tomorrow' }
+                        })
+                    ] ]).inline(),
+                    attachment: getImageWeekDay(date)
+                })
+            } catch ( e ) {
+                return context.send("Упс... Что-то пошло не так. Ошибка: " + e.toString())
+            }
         }
     ])
 })

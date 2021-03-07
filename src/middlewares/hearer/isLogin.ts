@@ -2,9 +2,13 @@ import { ContextDefaultState, MessageContext } from "vk-io";
 import { getClient } from "../../services/ClientService";
 
 export default async (context: MessageContext<ContextDefaultState>, next) => {
+    if ( context.session.client ) {
+        return next()
+    }
+
     const client = await getClient(context.peerId)
     if ( client ) {
-        context.client = client
+        context.session.client = client
         return next()
     }
 

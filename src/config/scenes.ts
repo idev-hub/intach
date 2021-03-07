@@ -4,8 +4,8 @@ import { Bot } from "../core/Bot";
 import { getCitiesByRegion, searchCity } from "../services/CityService";
 import { getRegions } from "../services/RegionService";
 import { getCollegeHandler, getCollegesByCity } from "../services/CollegeService";
-import { setClient } from "../services/ClientService";
-
+import { getClient, setClient } from "../services/ClientService";
+import { DateTime } from "luxon";
 export default (then: Bot) => {
     then.sceneManager.addScenes([
         new StepScene('start-scene', [
@@ -93,8 +93,7 @@ export default (then: Bot) => {
                                         }
                                     })
                                 })
-                            ]),
-                            attachment: 'photo-147858640_457239358'
+                            ])
                         })
                     }
 
@@ -128,8 +127,7 @@ export default (then: Bot) => {
                                         }
                                     })
                                 })
-                            ]),
-                            attachment: 'photo-147858640_457239362'
+                            ])
                         })
                     }
 
@@ -163,8 +161,7 @@ export default (then: Bot) => {
                                         }
                                     })
                                 })
-                            ]),
-                            attachment: 'photo-147858640_457239357'
+                            ])
                         })
                     }
 
@@ -206,8 +203,7 @@ export default (then: Bot) => {
                                         color: Keyboard.NEGATIVE_COLOR,
                                         label: "Преподователя"
                                     })
-                                ] ]),
-                                attachment: 'photo-147858640_457239359'
+                                ] ])
                             })
                         }
                         else {
@@ -236,8 +232,7 @@ export default (then: Bot) => {
                         if ( settings.corps ) {
                             await context.send({
                                 message: "Выберите необходимый корпус: ",
-                                keyboard: Keyboard.builder().oneTime(),
-                                attachment: 'photo-147858640_457239360'
+                                keyboard: Keyboard.builder().oneTime()
                             })
                         }
                         else {
@@ -257,15 +252,13 @@ export default (then: Bot) => {
                         if ( context.scene.state.type === 1 ) {
                             return context.send({
                                 message: "Введите нужную группу, только учтите, что вводить нужно правильно как на сайте, иначе расписание не найдется: ",
-                                keyboard: Keyboard.builder().oneTime(),
-                                attachment: 'photo-147858640_457239361'
+                                keyboard: Keyboard.builder().oneTime()
                             })
                         }
                         else {
                             return context.send({
                                 message: "Введите нужную фамилию преподователя, только учтите, что вводить нужно правильно как на сайте, иначе расписание не найдется: ",
-                                keyboard: Keyboard.builder().oneTime(),
-                                attachment: 'photo-147858640_457239361'
+                                keyboard: Keyboard.builder().oneTime()
                             })
                         }
                     }
@@ -295,6 +288,11 @@ export default (then: Bot) => {
                             corps: context.scene.state.corps,
                             role_id: context.scene.state.type
                         })
+
+                        const client = await getClient(context.peerId)
+                        if ( client ) {
+                            context.session.client = client
+                        }
 
                         await context.send({
                             message: 'Поздравляю! Теперь можно получать расписание занятий',

@@ -36,7 +36,7 @@ export const getCollegeLessonsWeek = async (id: number, param: string, week: num
 export const timetable = async (id: number, param: string, date: DateTime) => {
     const datestring = date.setLocale('ru').toFormat('dd.MM.yyyy')
     const table = await getCollegeLessons(id, param, datestring)
-    let message = `📅 [ ${ datestring } ] - ${ date.setLocale('ru').toFormat('EEEE').toUpperCase() }`
+    let message = `📅 [ ${ param } ] - ${ datestring }, ${ date.setLocale('ru').toFormat('EEEE') }`
     message += templateTimetable(table.data)
 
     return message
