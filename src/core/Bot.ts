@@ -36,12 +36,9 @@ export class Bot extends VK {
         })
         this.updates.on('message_new', isLogin)
         this.updates.on('message', (context, next) => {
-            const { messagePayload, senderType, state } = context
-
-            if ( senderType === "user" ) {
-
-                state.command = messagePayload && messagePayload.command
-                    ? messagePayload.command
+            if ( context.senderType === "user" ) {
+                context.state.command = (context.messagePayload && context.messagePayload.command)
+                    ? context.messagePayload.command
                     : null
 
                 this.hearManager.middleware(context, next)

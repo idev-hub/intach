@@ -1,6 +1,6 @@
 import { Bot } from "../core/Bot";
 import { ButtonColor, Keyboard, MessageContext } from "vk-io";
-import { getCollegeGroups, timetable } from "../services/CollegeService";
+import { timetable } from "../services/CollegeService";
 import { DateTime } from "luxon";
 import getImageWeekDay from "../utils/getImageWeekDay";
 import isInbox from "../middlewares/hearer/isInbox";
@@ -42,11 +42,11 @@ export default ((app: Bot) => {
      * ТОЛЬКО ДЛЯ АДМИНИСТРАЦИИ
      * @beta
      **/
-    app.hear("start", [ new RegExp(/^@(.*)/i) ], [
+    app.hear("change_param", [ new RegExp(/^@(.*)/i) ], [
         isOutbox,
         async (context: MessageContext) => {
             try {
-                const user = context.senderId
+                const user = context.peerId
                 const param = context.$match[1]
 
                 const client = await getClient(user)

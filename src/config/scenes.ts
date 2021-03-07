@@ -336,6 +336,13 @@ export default (then: Bot) => {
                                         payload: {
                                             command: 'after_tomorrow'
                                         }
+                                    }),
+                                    Keyboard.textButton({
+                                        color: Keyboard.NEGATIVE_COLOR,
+                                        label: 'Изменить данные',
+                                        payload: {
+                                            command: 'start'
+                                        }
                                     })
                                 ]
                             ])
