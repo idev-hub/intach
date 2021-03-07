@@ -26,11 +26,12 @@ export const getCollegeCorps = async (id: number) => {
 }
 
 export const getCollegeLessons = async (id: number, param: string, date: string) => {
-    return (await axios.get(`${ process.env.API }/colleges/${ id }/getLessons/${ param }/${ date }`)).data
+    return (await axios.get(`${ process.env.API }/colleges/${ id }/getLessons/${ encodeURI(param) }/${ date }`)).data
 }
 
 export const getCollegeLessonsWeek = async (id: number, param: string, week: number) => {
-    return (await axios.get(`${ process.env.API }/colleges/${ id }/getLessonsWeek/${ param }/${ week }`)).data
+
+    return (await axios.get(`${ process.env.API }/colleges/${ id }/getLessonsWeek/${ encodeURI(param) }/${ week }`)).data
 }
 
 export const timetable = async (id: number, param: string, date: DateTime) => {
