@@ -3,9 +3,10 @@ import { Keyboard, MessageContext } from "vk-io";
 import { Bot } from "../core/Bot";
 import { getCitiesByRegion, searchCity } from "../services/CityService";
 import { getRegions } from "../services/RegionService";
-import { getCollegeHandler, getCollegesByCity } from "../services/CollegeService";
+import { getCollegeGroups, getCollegeHandler, getCollegesByCity } from "../services/CollegeService";
 import { getClient, setClient } from "../services/ClientService";
 import { DateTime } from "luxon";
+import subarray from "../utils/subarray";
 export default (then: Bot) => {
     then.sceneManager.addScenes([
         new StepScene('start-scene', [
@@ -250,9 +251,17 @@ export default (then: Bot) => {
                 try {
                     if ( context.scene.step.firstTime || !context.text ) {
                         if ( context.scene.state.type === 1 ) {
+
+                            const groups = await getCollegeGroups(context.scene.state.college)
                             return context.send({
                                 message: "Введите нужную группу, только учтите, что вводить нужно правильно как на сайте, иначе расписание не найдется: ",
-                                keyboard: Keyboard.builder().oneTime()
+                                keyboard: Keyboard.keyboard(subarray(groups, 5, 8).map(_arr => {
+                                    return _arr.map(_item => {
+                                        return Keyboard.textButton({
+                                            label: _item
+                                        })
+                                    })
+                                }))
                             })
                         }
                         else {

@@ -1,13 +1,40 @@
 import { Bot } from "../core/Bot";
 import { ButtonColor, Keyboard, MessageContext } from "vk-io";
-import { timetable } from "../services/CollegeService";
+import { getCollegeGroups, timetable } from "../services/CollegeService";
 import { DateTime } from "luxon";
 import getImageWeekDay from "../utils/getImageWeekDay";
 import isInbox from "../middlewares/hearer/isInbox";
 import isOutbox from "../middlewares/hearer/isOutbox";
 import { getClient, setClient } from "../services/ClientService";
+import subarray from "../utils/subarray";
 
 export default ((app: Bot) => {
+
+    /**
+     * Команда ТЕСТ
+     * Обновление или добавление личных данных пользователя
+     * @beta
+     **/
+    app.hear("test", [ new RegExp(/^(test|тест)/i) ], [
+        isInbox,
+        async (context: MessageContext) => {
+            const arr = []
+            for ( let i = 0; i < 101; i++ ) {
+                arr.push(i)
+            }
+            return context.send({
+                message: 'hi',
+                keyboard: Keyboard.keyboard(subarray(arr, 5, 8).map(_arr => {
+                    return _arr.map(_item => {
+                        return Keyboard.textButton({
+                            label: _item
+                        })
+                    })
+                }))
+            })
+        }
+    ])
+
 
     /**
      * Команда СМЕНИТЬ ГРУППУ/ФАМИЛИЮ
@@ -46,7 +73,6 @@ export default ((app: Bot) => {
         isInbox,
         (context: MessageContext) => context.scene.enter("start-scene")
     ])
-
 
     /**
      * Команда ВЧЕРА
