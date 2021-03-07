@@ -10,7 +10,7 @@
         ],
         "moduleResolution": "node",
         "sourceMap": false,
-        "esModuleInterop":  true,
+        "esModuleInterop": true,
         "removeComments": true,
         "outDir": "dist",
         "baseUrl": ".",

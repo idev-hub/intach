@@ -1,13 +1,16 @@
 import { ContextDefaultState, MessageContext } from "vk-io";
-import { peer } from "../../services/peer";
-import Language from "../../classes/Language";
+import { getClient } from "../../services/ClientService";
 
 export default async (context: MessageContext<ContextDefaultState>, next) => {
-    const user = await peer.getUserAndSubscribe(context)
-    if (user) {
-        context.user = user
-        context.lang = new Language(user.peer["lang"]).template()
+    const client = await getClient(context.peerId)
+    if ( client ) {
+        context.client = client
         return next()
-    } else
-        return context.scene.enter('start-scene')
+    }
+
+    await context.send({
+        message: 'Здравствуйте. Что бы получать расписание занятий, мне необходимо знать некоторую информацию.'
+    })
+
+    return context.scene.enter('start-scene')
 }

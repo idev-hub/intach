@@ -119,3 +119,5 @@ out
 compressor.js
 /.idea/
 /dist/
+
+yarn.lock

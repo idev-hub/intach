@@ -1,150 +1,348 @@
-import {StepScene} from "@vk-io/scenes";
-import {Keyboard} from "vk-io";
-import {peer} from "../services/peer";
-import {keyboards} from "./keyboards";
-import {randomInt} from "../utils/random";
+import { StepScene } from "@vk-io/scenes";
+import { Keyboard, MessageContext } from "vk-io";
+import { Bot } from "../core/Bot";
+import { getCitiesByRegion, searchCity } from "../services/CityService";
+import { getRegions } from "../services/RegionService";
+import { getCollegeHandler, getCollegesByCity } from "../services/CollegeService";
+import { setClient } from "../services/ClientService";
 
-export default (then) => {
+export default (then: Bot) => {
     then.sceneManager.addScenes([
         new StepScene('start-scene', [
-            async (context) => {
-                if (context.scene.step.firstTime || !context.text) {
-                    await context.setActivity()
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+                        const user = await then.api.users.get({
+                            user_ids: context.peerId.toString(),
+                            fields: [ 'sex', 'country', 'city' ]
+                        })
+                        if ( user && user[0] ) {
+                            context.scene.state.user = user[0]
+                            context.scene.state.sex = user[0].sex
 
-                    await context.send({
-                        message: context.lang["scene"]["data_update"]["start"],
-                        keyboard: Keyboard.builder().oneTime()
-                    })
-                }
-
-                return context.scene.step.next()
-            },
-            async (context) => {
-                const {lang} = context
-
-                if (context.scene.step.firstTime || !context.text) {
-                    await context.setActivity()
-
-                    return context.send({
-                        message: lang["scene"]["data_update"]["enter_group"],
-                        keyboard: Keyboard.builder().urlButton({
-                            label: lang["button"]["detail"],
-                            url: "https://vk.com/@in_teach-prav"
-                        }).inline()
-                    })
-                }
-
-                context.scene.state.param = context.text.toLowerCase().trim().replace(/\s/g, '')
-                return context.scene.step.next()
-            },
-            async (context) => {
-                const {param} = context.scene.state
-                const {lang} = context
-
-                await context.setActivity()
-
-                await peer.setUser(context, param)
-                await peer.setSubscribe(context, false)
-
-                await context.send({
-                    message: lang["scene"]["data_update"]["success"],
-                    keyboard: keyboards.mainKeyboard(context)
-                })
-
-                await context.send({
-                    message: lang["scene"]["data_update"]["end"],
-                    keyboard: Keyboard.builder().textButton({
-                        label: lang["button"]["today"],
-                        color: Keyboard.PRIMARY_COLOR,
-                        payload: {
-                            command: "today"
+                            if ( user[0].city && user[0].city.title ) {
+                                const city = await searchCity(user[0].city.title)
+                                if ( city ) {
+                                    context.scene.state._city = city
+                                    return context.send({
+                                        message: `Ваш город ${ city.name }?`,
+                                        keyboard: Keyboard.keyboard([ [
+                                            Keyboard.textButton({
+                                                color: Keyboard.POSITIVE_COLOR,
+                                                payload: {
+                                                    type: 'yes'
+                                                },
+                                                label: "Да"
+                                            }),
+                                            Keyboard.textButton({
+                                                color: Keyboard.NEGATIVE_COLOR,
+                                                payload: {
+                                                    type: 'no'
+                                                },
+                                                label: "Нет"
+                                            })
+                                        ] ])
+                                    })
+                                }
+                                else {
+                                    return context.scene.step.next()
+                                }
+                            }
+                            else {
+                                return context.scene.step.next()
+                            }
                         }
-                    }).textButton({
-                        label: lang["button"]["tomorrow"],
-                        color: Keyboard.POSITIVE_COLOR,
-                        payload: {
-                            command: "tomorrow"
+                        else {
+                            return context.scene.step.next()
                         }
-                    }).inline()
-                })
-
-                return context.scene.step.next()
-            }
-        ]),
-        new StepScene("rock-paper-scissors", [
-            async (context) => {
-                if (context.scene.step.firstTime || !context.text) {
-                    await context.setActivity()
-                    await context.send("Играем в игру Камень, ножницы, бумага.\nДо одной победы")
-                }
-                return context.scene.step.next()
-            },
-            async (context) => {
-                const asset = [
-                    {
-                        name: "🗿",
-                        command: "rock",
-                        color: Keyboard.PRIMARY_COLOR
-                    },
-                    {
-                        name: "✂",
-                        command: "scissors",
-                        color: Keyboard.PRIMARY_COLOR
-                    },
-                    {
-                        name: "📜",
-                        command: "paper",
-                        color: Keyboard.PRIMARY_COLOR
                     }
-                ]
 
-                if (context.scene.step.firstTime || !context.text) {
-                    await context.setActivity()
+                    if ( context.messagePayload && context.messagePayload.type ) {
+                        if ( context.messagePayload.type === 'no' ) {
+                            return context.scene.step.next()
+                        }
+                        else {
+                            context.scene.state.region = context.scene.state._city.region_id
+                            context.scene.state.city = context.scene.state._city.id
+                            return context.scene.step.go(3)
+                        }
+                    }
+                    else {
+                        return context.send('Пожалуйста воспользуйтесь клавиатурой.')
+                    }
+                } catch ( e ) {
                     await context.send({
-                        message: "Выбирайте камень, ножницы или бумага\nЕсли проиграешь не забудь скинуть админу на дошик 🍜",
-                        keyboard: Keyboard.keyboard([
-                            asset.map(a => {
-                                return Keyboard.textButton({
-                                    label: a.name,
-                                    color: a.color,
-                                    payload: {
-                                        command: a.command
-                                    }
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                    })
+                    return context.scene.leave()
+                }
+            }, // Определение города, получение первичной информации
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+                        const regions = await getRegions()
+                        return context.send({
+                            message: "Выберите необходимый регион: ",
+                            keyboard: Keyboard.keyboard([
+                                ...regions.data.map(region => {
+                                    return Keyboard.textButton({
+                                        label: region.name,
+                                        color: Keyboard.PRIMARY_COLOR,
+                                        payload: {
+                                            region: region.id
+                                        }
+                                    })
                                 })
-                            })
-                        ]).inline()
+                            ]),
+                            attachment: 'photo-147858640_457239358'
+                        })
+                    }
+
+                    if ( context.messagePayload && context.messagePayload.region ) {
+                        context.scene.state.region = context.messagePayload.region
+                        return context.scene.step.next()
+                    }
+                    else {
+                        return context.send('Пожалуйста воспользуйтесь клавиатурой.')
+                    }
+                } catch ( e ) {
+                    await context.send({
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
                     })
+                    return context.scene.leave()
                 }
+            }, // Выбор региона
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+                        const cities = await getCitiesByRegion(context.messagePayload.region)
+                        return context.send({
+                            message: "Выберите необходимый город: ",
+                            keyboard: Keyboard.keyboard([
+                                cities.map(city => {
+                                    return Keyboard.textButton({
+                                        label: city.name,
+                                        color: Keyboard.PRIMARY_COLOR,
+                                        payload: {
+                                            city: city.id
+                                        }
+                                    })
+                                })
+                            ]),
+                            attachment: 'photo-147858640_457239362'
+                        })
+                    }
 
-                if (context.messagePayload) {
-                    const command = context.messagePayload.command
-                    context.scene.state.firstChoice = command
-                    const rand = randomInt(0, 3)
+                    if ( context.messagePayload && context.messagePayload.city ) {
+                        context.scene.state.city = context.messagePayload.city
+                        return context.scene.step.next()
+                    }
+                    else {
+                        return context.send('Пожалуйста воспользуйтесь клавиатурой.')
+                    }
+                } catch ( e ) {
+                    await context.send({
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                    })
+                    return context.scene.leave()
+                }
+            }, // Выбор города
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+                        const colleges = await getCollegesByCity(context.scene.state.city)
+                        return context.send({
+                            message: "Выберите необходимый колледж: ",
+                            keyboard: Keyboard.keyboard([
+                                colleges.map(college => {
+                                    return Keyboard.textButton({
+                                        label: college.name,
+                                        color: Keyboard.PRIMARY_COLOR,
+                                        payload: {
+                                            college: college.id
+                                        }
+                                    })
+                                })
+                            ]),
+                            attachment: 'photo-147858640_457239357'
+                        })
+                    }
 
-                    for (let i = 0; i < asset.length; i++) {
-                        const player = asset[i]
-                        if (player.command === command) {
-                            const enemy = asset[rand]
-                            let result = 0, text = ""
+                    if ( context.messagePayload && context.messagePayload.college ) {
+                        context.scene.state.college = context.messagePayload.college
+                        context.scene.state.handler = await getCollegeHandler(context.messagePayload.college)
 
-                            if (player.command === enemy.command) result = 0
-                            else if ((player.command === "rock") && (enemy.command === "paper")) result = 1
-                            else if ((player.command === "rock") && (enemy.command === "scissors")) result = 2
-                            else if ((player.command === "paper") && (enemy.command === "rock")) result = 2
-                            else if ((player.command === "paper") && (enemy.command === "scissors")) result = 1
-                            else if ((player.command === "scissors") && (enemy.command === "rock")) result = 1
-                            else if ((player.command === "scissors") && (enemy.command === "paper")) result = 2
-
-                            if (result === 0) text = "Хах! Вам повезло, НИЧЬЯ"
-                            else if (result === 1) text = "Где мой дошик? 🍜\nВы ПРОИГРАЛИ!"
-                            else if (result === 2) text = "Эх, останусь сегодня без еды. Вы ПОБЕДИЛИ"
-
-                            await context.send(`У вас ${player.name}, а у меня ${enemy.name}\n\n${text}`)
-                            return context.scene.leave()
+                        return context.scene.step.next()
+                    }
+                    else {
+                        return context.send('Пожалуйста воспользуйтесь клавиатурой.')
+                    }
+                } catch ( e ) {
+                    await context.send({
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                    })
+                    return context.scene.leave()
+                }
+            }, // Выбор колледжа
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+                        const { settings } = context.scene.state.handler
+                        if ( settings.teacher ) {
+                            await context.send({
+                                message: "Вы хотите получать расписание для студентов или преподователей?",
+                                keyboard: Keyboard.keyboard([ [
+                                    Keyboard.textButton({
+                                        payload: {
+                                            type: 1
+                                        },
+                                        color: Keyboard.POSITIVE_COLOR,
+                                        label: "Ученика"
+                                    }),
+                                    Keyboard.textButton({
+                                        payload: {
+                                            type: 2
+                                        },
+                                        color: Keyboard.NEGATIVE_COLOR,
+                                        label: "Преподователя"
+                                    })
+                                ] ]),
+                                attachment: 'photo-147858640_457239359'
+                            })
+                        }
+                        else {
+                            context.scene.state.type = 1
+                            return context.scene.step.next()
                         }
                     }
+                    if ( context.messagePayload && context.messagePayload.type ) {
+                        context.scene.state.type = context.messagePayload.type
+                        return context.scene.step.next()
+                    }
+                    else {
+                        return context.send('Пожалуйста воспользуйтесь клавиатурой.')
+                    }
+                } catch ( e ) {
+                    await context.send({
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                    })
+                    return context.scene.leave()
                 }
-            }
+            }, // Выбор типа пользователя
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+                        const { settings } = context.scene.state.handler
+                        if ( settings.corps ) {
+                            await context.send({
+                                message: "Выберите необходимый корпус: ",
+                                keyboard: Keyboard.builder().oneTime(),
+                                attachment: 'photo-147858640_457239360'
+                            })
+                        }
+                        else {
+                            return context.scene.step.next()
+                        }
+                    }
+                } catch ( e ) {
+                    await context.send({
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                    })
+                    return context.scene.leave()
+                }
+            }, // Выбор корпуса
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+                        if ( context.scene.state.type === 1 ) {
+                            return context.send({
+                                message: "Введите нужную группу, только учтите, что вводить нужно правильно как на сайте, иначе расписание не найдется: ",
+                                keyboard: Keyboard.builder().oneTime(),
+                                attachment: 'photo-147858640_457239361'
+                            })
+                        }
+                        else {
+                            return context.send({
+                                message: "Введите нужную фамилию преподователя, только учтите, что вводить нужно правильно как на сайте, иначе расписание не найдется: ",
+                                keyboard: Keyboard.builder().oneTime(),
+                                attachment: 'photo-147858640_457239361'
+                            })
+                        }
+                    }
+
+                    if ( context.text ) {
+                        context.scene.state.param = context.text
+                        return context.scene.step.next()
+                    }
+                } catch ( e ) {
+                    await context.send({
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                    })
+                    return context.scene.leave()
+                }
+            }, // Ввод группы/фамилии преподователя
+            async (context: MessageContext) => {
+                try {
+                    if ( context.scene.step.firstTime || !context.text ) {
+
+                        await setClient({
+                            peer_id: context.peerId,
+                            sex: context.scene.state.sex,
+                            firstname: context.scene.state.user.first_name,
+                            lastname: context.scene.state.user.last_name,
+                            param: context.scene.state.param,
+                            college_id: context.scene.state.college,
+                            corps: context.scene.state.corps,
+                            role_id: context.scene.state.type
+                        })
+
+                        await context.send({
+                            message: 'Поздравляю! Теперь можно получать расписание занятий',
+                            keyboard: Keyboard.keyboard([
+                                [
+                                    Keyboard.textButton({
+                                        color: Keyboard.NEGATIVE_COLOR,
+                                        label: 'Вчера',
+                                        payload: {
+                                            command: 'yesterday'
+                                        }
+                                    }),
+                                    Keyboard.textButton({
+                                        color: Keyboard.PRIMARY_COLOR,
+                                        label: 'Сегодня',
+                                        payload: {
+                                            command: 'today'
+                                        }
+                                    }),
+                                    Keyboard.textButton({
+                                        color: Keyboard.POSITIVE_COLOR,
+                                        label: 'Завтра',
+                                        payload: {
+                                            command: 'tomorrow'
+                                        }
+                                    })
+                                ],
+                                [
+                                    Keyboard.textButton({
+                                        color: Keyboard.SECONDARY_COLOR,
+                                        label: 'Послезавтра',
+                                        payload: {
+                                            command: 'after_tomorrow'
+                                        }
+                                    })
+                                ]
+                            ])
+                        })
+
+                        return context.scene.step.next()
+                    }
+                } catch ( e ) {
+                    await context.send({
+                        message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                    })
+                    return context.scene.leave()
+                }
+            }  // Сохранение данных
         ])
     ])
 }

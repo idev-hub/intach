@@ -1,6 +1,6 @@
 {
     "name": "intach",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "main": "dist/index.js",
     "license": "MIT",
     "private": true,
@@ -11,30 +11,23 @@
         "dev": "nodemon"
     },
     "devDependencies": {
-        "@types/bluebird": "^3.5.32",
-        "@types/node": "^14.11.5",
-        "@types/validator": "^13.1.0",
-        "ts-node": "^9.0.0",
-        "typescript": "^4.0.3"
+        "@types/bluebird": "^3.5.33",
+        "@types/luxon": "^1.26.2",
+        "@types/node": "^14.14.31",
+        "@types/validator": "^13.1.3",
+        "nodemon": "^2.0.4",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.2.3"
     },
     "dependencies": {
         "@vk-io/hear": "^1.0.2",
         "@vk-io/scenes": "^1.0.0",
         "@vk-io/session": "^2.0.0",
-        "app-root-path": "^3.0.0",
-        "axios": "^0.20.0",
-        "body-parser": "^1.19.0",
+        "axios": "^0.21.1",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
-        "luxon": "^1.25.0",
+        "luxon": "^1.26.0",
         "middleware-io": "^2.5.0",
-        "mysql2": "^2.2.5",
-        "node-fetch": "^2.6.1",
-        "nodemon": "^2.0.4",
-        "pg": "^8.4.0",
-        "pg-hstore": "^2.3.3",
-        "sequelize": "^6.3.5",
-        "sqlite3": "^5.0.0",
-        "vk-io": "^4.0.3"
+        "vk-io": "^4.1.4"
     }
 }
