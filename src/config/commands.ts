@@ -24,7 +24,7 @@ export default ((app: Bot) => {
             }
             return context.send({
                 message: 'hi',
-                keyboard: Keyboard.keyboard(subarray(arr, 5, 8).map(_arr => {
+                keyboard: Keyboard.keyboard(subarray(arr, 4, 8).map(_arr => {
                     return _arr.map(_item => {
                         return Keyboard.textButton({
                             label: _item
