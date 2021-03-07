@@ -3,16 +3,50 @@ import { ButtonColor, Keyboard, MessageContext } from "vk-io";
 import { timetable } from "../services/CollegeService";
 import { DateTime } from "luxon";
 import getImageWeekDay from "../utils/getImageWeekDay";
+import isInbox from "../middlewares/hearer/isInbox";
+import isOutbox from "../middlewares/hearer/isOutbox";
+import { getClient, setClient } from "../services/ClientService";
 
 export default ((app: Bot) => {
+
+    /**
+     * Команда СМЕНИТЬ ГРУППУ/ФАМИЛИЮ
+     * Обновление личных данных пользователя
+     * ТОЛЬКО ДЛЯ АДМИНИСТРАЦИИ
+     * @beta
+     **/
+    app.hear("start", [ new RegExp(/^@(.*)/i) ], [
+        isOutbox,
+        async (context: MessageContext) => {
+            try {
+                const user = context.senderId
+                const param = context.$match[1]
+
+                const client = await getClient(user)
+                if ( client ) {
+                    await setClient({ peer_id: user.toString(), param: encodeURI(param) })
+                    return context.editMessage({
+                        message: `Вам изменили группу с ${ client.param } на ${ param }.`
+                    })
+                }
+            } catch ( e ) {
+                return context.editMessage({
+                    message: "Упс... Что-то пошло не так. Ошибка: " + e.toString()
+                })
+            }
+        }
+    ])
+
     /**
      * Команда НАЧАТЬ
      * Обновление или добавление личных данных пользователя
      * @beta
      **/
     app.hear("start", [ new RegExp(/^(начать|start)/i) ], [
+        isInbox,
         (context: MessageContext) => context.scene.enter("start-scene")
     ])
+
 
     /**
      * Команда ВЧЕРА
@@ -20,6 +54,7 @@ export default ((app: Bot) => {
      * @beta
      **/
     app.hear("yesterday", [ new RegExp(/^(вчера|в|d|yesterday)/i) ], [
+        isInbox,
         async (context: MessageContext) => {
             try {
                 const date = DateTime.now().minus({ days: 1 }),
@@ -53,6 +88,7 @@ export default ((app: Bot) => {
      * @beta
      **/
     app.hear("today", [ new RegExp(/^(сегодня|с|c|today)/i) ], [
+        isInbox,
         async (context: MessageContext) => {
             try {
                 const date = DateTime.now(),
@@ -85,6 +121,7 @@ export default ((app: Bot) => {
      * @beta
      **/
     app.hear("tomorrow", [ new RegExp(/^(завтра|з|p|tomorrow)/i) ], [
+        isInbox,
         async (context: MessageContext) => {
             try {
                 const date = DateTime.now().plus({ days: 1 }),
@@ -117,6 +154,7 @@ export default ((app: Bot) => {
      * @beta
      **/
     app.hear("after_tomorrow", [ new RegExp(/^(послезавтра|пз|gp|after_tomorrow)/i) ], [
+        isInbox,
         async (context: MessageContext) => {
             try {
                 const date = DateTime.now().plus({ days: 2 }),
